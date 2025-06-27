@@ -1,6 +1,7 @@
 NAME= lex
 
-SRCS= main.c \
+SRCS= srcs/main.c \
+	   srcs/file_error.c 
 
 OBJS= $(SRCS:.c=.o) 
 
