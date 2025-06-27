@@ -15,7 +15,6 @@ extern FILE *yyout;		// Output file pointer
 int   yymore(void);
 int   yyless(int n);
 int   input(void);
-int   output(void);
 int   yywrap(void);
 int   unput(int c);
 

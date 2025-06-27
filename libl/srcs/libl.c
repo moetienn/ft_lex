@@ -34,22 +34,33 @@ int yyless(int n)
 	return (0);
 }
 
+// Read the next character from the input stream
 int input(void)
 {
-	return (0);
+	int	c;
+	FILE *stream = yyin;
+	if (!stream)
+		stream = stdin; // Default to standard input if yyin is NULL
+	c = fgetc(stream); // Read a character from the input stream
+	if (c == EOF)
+		return (0); // Return 0 on end of file
+	return (c);
 }
 
-int output(void)
+// Push back a character to the input stream
+int unput(int c)
 {
-	return (0);
+	FILE *stream = yyin;
+
+	if (!stream)
+  		stream = stdin; // Default to standard input if yyin is NULL
+	if (c != 0)
+		ungetc(c, stream); // Push back the character to the input stream
+	return (c);
 }
 
 int yywrap(void)
 {
-	return (0);
-}
-
-int unput(int c)
-{
-	return (0);
+	// This function is called when the end of the input stream is reached
+	return (1);
 }
