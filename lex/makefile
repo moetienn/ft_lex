@@ -2,7 +2,10 @@ NAME= lex
 
 SRCS= srcs/main.c \
 	   srcs/file_error.c \
-	   srcs/ft_lex.c
+	   srcs/ft_lex.c \
+	   srcs/parse_file.c \
+	   srcs/init_parser.c \
+	   srcs/utils.c
 
 OBJDIR= obj
 OBJS= $(addprefix $(OBJDIR)/, $(SRCS:.c=.o))
