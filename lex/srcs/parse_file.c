@@ -17,20 +17,18 @@ void	get_section(t_parser *parser)
 		parser->third_section = strdup(parser->buffer);
 	}
 	free(parser->buffer);
-	parser->buffer = malloc(1024); // Reset buffer for next section
+	parser->buffer = malloc(1); // Reset buffer for next section
 	parser->buffer[0] = '\0'; // Initialize buffer to empty string
 }
 
 void	parse_file(t_parser *parser)
 {
 	printf("Parsing file...\n");
-
 	if (!check_parser(parser))
 	{
 		fprintf(stderr, "Error: Invalid parser state.\n");
 		return;
 	}
-
 	if (init_parser(parser) != 0)
 	{
 		fprintf(stderr, "Error: Failed to initialize parser.\n");
@@ -44,7 +42,11 @@ void	parse_file(t_parser *parser)
 		if (strstr(parser->line, "%%") != NULL)
 			get_section(parser);
 		else
+		{
+			size_t needed = strlen(parser->buffer) + strlen(parser->line) + 1;
+			parser->buffer = realloc(parser->buffer, needed);
 			strcat(parser->buffer, parser->line);	
+		}
 	}
 	if (parser->current_section == SEC_USER_CODE && parser->buffer[0] != '\0')
 		get_section(parser);
@@ -53,9 +55,5 @@ void	parse_file(t_parser *parser)
 		free(parser->buffer);
 		parser->buffer = NULL;
 	}
-	printf("Parsing completed.\n");
-	printf("First section: %s\n", parser->first_section);
-	printf("Second section: %s\n", parser->second_section);
-	printf("Third section: %s\n", parser->third_section);
 }
 
