@@ -10,7 +10,6 @@ void    ft_lex(const char *filename)
     }
     // Process the file...
 
-    
     // 1st step: identify sections
     // -> 1ST section
     // -> %{ %} -> C code section to add on the top of the yy.c file
@@ -19,7 +18,12 @@ void    ft_lex(const char *filename)
     // -> rules section
     // -> 3RD section
     // -> user code section
-
+    t_parser parser;
+    
+    parser.file = file;
+    parser.filename = strdup(filename);
+    parse_file(&parser);
+    
+    free_parser(&parser);
     // end of processing
-    fclose(file);
 }
