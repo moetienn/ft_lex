@@ -5,7 +5,8 @@ int	init_parser(t_parser *parser)
 	parser->delimiter_count = 0;
 	parser->current_section = SEC_DECLARATIONS;
 	parser->buffer = NULL;
-	parser->buffer = malloc(1024); // Allocate initial buffer size
+	parser->buffer = malloc(1);
+	parser->buffer[0] = '\0';
 	parser->line = NULL;
 	parser->len = 0;
 	if (!parser->buffer)
