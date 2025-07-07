@@ -1,5 +1,5 @@
-#include "../includes/lex.h"
-#include "../includes/parser.h"
+#include "../../includes/lex.h"
+#include "../../includes/parser.h"
 
 void    free_parser(t_parser *parser)
 {

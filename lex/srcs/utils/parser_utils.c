@@ -1,4 +1,4 @@
-#include "../includes/parser.h"
+#include "../../includes/parser.h"
 
 void	trim_whitespace(char *line, size_t len)
 {

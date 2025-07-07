@@ -1,7 +1,8 @@
 #ifndef MACROS_H
 #define MACROS_H
 
-#include "first_section.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 typedef struct s_macro
 {
