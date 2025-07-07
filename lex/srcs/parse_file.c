@@ -21,6 +21,29 @@ void	get_section(t_parser *parser)
 	parser->buffer[0] = '\0'; // Initialize buffer to empty string
 }
 
+void	get_section_loop(t_parser *parser)
+{
+	while (getline(&parser->line, &parser->len, parser->file) != -1)
+	{
+		size_t len = strlen(parser->line);
+		trim_whitespace(parser->line, len);
+		len = strlen(parser->line);
+		if (len == 0)
+			continue;
+		if (parser->line[0] == '%' && parser->line[1] == '%')
+			get_section(parser);
+		else
+			append_to_buffer(parser, parser->line);
+	}
+	if (parser->current_section == SEC_USER_CODE && parser->buffer[0] != '\0')
+		get_section(parser);
+	if (parser->buffer != NULL)
+	{
+		free(parser->buffer);
+		parser->buffer = NULL;
+	}
+}
+
 void	parse_file(t_parser *parser)
 {
 	printf("Parsing file...\n");
@@ -34,26 +57,6 @@ void	parse_file(t_parser *parser)
 		fprintf(stderr, "Error: Failed to initialize parser.\n");
 		return;
 	}
-
-	// Read the file and get the sections
-	while (getline(&parser->line, &parser->len, parser->file) != -1)
-	{
-		// printf("Read line: %s", parser->line);
-		if (strstr(parser->line, "%%") != NULL)
-			get_section(parser);
-		else
-		{
-			size_t needed = strlen(parser->buffer) + strlen(parser->line) + 1;
-			parser->buffer = realloc(parser->buffer, needed);
-			strcat(parser->buffer, parser->line);	
-		}
-	}
-	if (parser->current_section == SEC_USER_CODE && parser->buffer[0] != '\0')
-		get_section(parser);
-	if (parser->buffer != NULL)
-	{
-		free(parser->buffer);
-		parser->buffer = NULL;
-	}
+	get_section_loop(parser);
 }
 

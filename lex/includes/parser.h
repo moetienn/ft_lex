@@ -28,7 +28,8 @@ typedef struct s_parser
 }   t_parser;
 
 // UTILS.C
-
+void 	append_to_buffer(t_parser *parser, const char *line);
+void	trim_whitespace(char *line, size_t len);
 int		check_parser(t_parser *parser);
 void	free_parser(t_parser *parser);
 
