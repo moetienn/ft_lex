@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct s_macro
 {
@@ -17,5 +18,8 @@ typedef struct s_macros_list
     size_t	capacity; // Capacity of the array
 }	t_macros_list;
 
+void	init_macros_list(t_macros_list *macros_list);
+void	free_macros_list(t_macros_list *macros_list);
+void	add_macro(t_macros_list *macros_list, const char *name, const char *value);
 
 #endif
