@@ -6,6 +6,8 @@ SRCS= srcs/main.c \
 	   srcs/parse_file.c \
 	   srcs/init_parser.c \
 	   srcs/parser_utils.c \
+	   srcs/first_section.c \
+	   srcs/macros.c \
 	   srcs/utils.c
 
 OBJDIR= obj
@@ -14,7 +16,9 @@ OBJS= $(addprefix $(OBJDIR)/, $(SRCS:.c=.o))
 CC= cc
 
 HDR= includes/lex.h \
-	 includes/parser.h 
+	 includes/parser.h \
+	 includes/first_section/macros.h \
+	 includes/first_section/first_section.h
 
 CFLAGS= -Wall -Wextra -Werror -g
 
