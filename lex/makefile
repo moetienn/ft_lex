@@ -5,6 +5,7 @@ SRCS= srcs/main.c \
 	   srcs/ft_lex.c \
 	   srcs/parse_file.c \
 	   srcs/init_parser.c \
+	   srcs/parser_utils.c \
 	   srcs/utils.c
 
 OBJDIR= obj
@@ -15,7 +16,7 @@ CC= cc
 HDR= includes/lex.h \
 	 includes/parser.h 
 
-CFLAGS= -Wall -Wextra -Werror
+CFLAGS= -Wall -Wextra -Werror -g
 
 all: $(NAME)
 
