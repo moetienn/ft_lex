@@ -17,8 +17,8 @@ void	get_section(t_parser *parser)
 		parser->third_section = strdup(parser->buffer);
 	}
 	free(parser->buffer);
-	parser->buffer = malloc(1); // Reset buffer for next section
-	parser->buffer[0] = '\0'; // Initialize buffer to empty string
+	parser->buffer = malloc(1);
+	parser->buffer[0] = '\0';
 }
 
 void	get_section_loop(t_parser *parser)

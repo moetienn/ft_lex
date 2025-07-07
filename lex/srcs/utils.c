@@ -1,3 +1,4 @@
+#include "../includes/lex.h"
 #include "../includes/parser.h"
 
 void    free_parser(t_parser *parser)
@@ -18,4 +19,12 @@ void    free_parser(t_parser *parser)
         free(parser->third_section);
     if (parser->file)
         fclose(parser->file);
+}
+
+void    free_lex(t_lex *lex)
+{
+    if (!lex)
+        return;
+    if (lex->declaration_code)
+        free(lex->declaration_code);
 }
