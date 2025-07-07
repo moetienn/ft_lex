@@ -1,4 +1,4 @@
-#include "../includes/lex.h"
+#include "../../includes/lex.h"
 
 int	open_file(const char *filename)
 {

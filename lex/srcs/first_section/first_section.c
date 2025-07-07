@@ -1,5 +1,5 @@
-#include "../includes/first_section/first_section.h"
-#include "../includes/lex.h"
+#include "../../includes/first_section/first_section.h"
+#include "../../includes/lex.h"
 
 void	get_declaration_code(t_parser *parser, t_lex *lex, size_t *i)
 {
