@@ -7,6 +7,7 @@
 #include "parser.h"
 #include "declaration/macros.h"
 #include "rules/rules.h"
+#include "nfa/nfa.h"
 
 
 typedef struct s_lex
@@ -17,6 +18,12 @@ typedef struct s_lex
 	// 2 nd section of the lexer file
 	t_parser parser;
 	t_rules_list rules_list;
+	// 3 rd section of the lexer file
+	char	*user_code;
+
+	// NFA
+	t_token *nfa_start; // start state of the NFA
+
 }   t_lex;
 
 // utils
@@ -34,7 +41,11 @@ char    *replace_tmp_with_macro(const char *tmp, t_macros_list *macros_list);
 char	*append_macro(const char *str, size_t *i, char *macro, size_t start);
 char	*pattern_to_macro(const char *str, size_t *i, t_macros_list *macros_list);
 void    collect_rules(t_lex *lex);
-//
+
+// NFA
+
+void    tokenize_patterns(t_lex *lex);
+void    build_nfa(t_lex *lex);
 
 void	ft_lex(const char *filename);
 

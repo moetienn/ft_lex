@@ -22,7 +22,6 @@ char	*append_macro(const char *str, size_t *i, char *macro, size_t start)
 		return NULL;
 	}
 	strncat(macro, &str[start], rest_len);
-	macro[strlen(macro) + rest_len] = '\0';
 	return macro;
 }
 

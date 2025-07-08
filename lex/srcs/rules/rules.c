@@ -33,9 +33,4 @@ void collect_rules(t_lex *lex)
 		free(pattern);
 	if (action != NULL)
 		free(action);
-	for (size_t j = 0; j < lex->rules_list.count; j++)
-	{
-		t_rule *rule = &lex->rules_list.list[j];
-		printf("Rule %zu: %s -> %s\n", j + 1, rule->pattern, rule->action);
-	}
 }

@@ -44,8 +44,4 @@ void    collect_first_section(t_parser *parser, t_lex *lex)
 	size_t i = 0;
 	get_declaration_code(parser, lex, &i);
 	collect_macros(lex, &i);
-	for (size_t j = 0; j < lex->macros_list.count; j++)
-	{
-		printf("Macro %zu: %s = %s\n", j + 1, lex->macros_list.list[j].name, lex->macros_list.list[j].value);
-	}
 }
