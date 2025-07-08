@@ -10,22 +10,26 @@ UTILSSRCS= srcs/utils/utils.c \
 PARSER = srcs/parser/parse_file.c \
 			srcs/parser/init_parser.c
 
-FIRST_SECTION = srcs/first_section/first_section.c \
-				srcs/first_section/utils_macros.c \
-				srcs/first_section/macros.c
+DECLARATION = srcs/declaration/first_section.c \
+				srcs/declaration/utils_macros.c \
+				srcs/declaration/macros.c
+
+RULES = srcs/rules/rules.c \
+			srcs/rules/utils_rules.c
 
 OBJDIR= obj
 OBJS= $(addprefix $(OBJDIR)/, $(SRCS:.c=.o))
 UTILSOBJS= $(addprefix $(OBJDIR)/, $(UTILSSRCS:.c=.o))
 PARSEROBJS= $(addprefix $(OBJDIR)/, $(PARSER:.c=.o))
-FIRST_SECTION_OBJS= $(addprefix $(OBJDIR)/, $(FIRST_SECTION:.c=.o))
+DECLARATION_OBJS= $(addprefix $(OBJDIR)/, $(DECLARATION:.c=.o))
+RULES_OBJS= $(addprefix $(OBJDIR)/, $(RULES:.c=.o))
 
 CC= cc
 
 HDR= includes/lex.h \
 	 includes/parser.h \
-	 includes/first_section/macros.h \
-	 includes/first_section/first_section.h
+	 includes/declaration/macros.h \
+	 includes/declaration/first_section.h
 
 CFLAGS= -Wall -Wextra -Werror -g
 
@@ -35,8 +39,8 @@ $(OBJDIR)/%.o: %.c $(HDR)
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(NAME): $(OBJS) $(UTILSOBJS) $(PARSEROBJS) $(FIRST_SECTION_OBJS)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(UTILSOBJS) $(PARSEROBJS) $(FIRST_SECTION_OBJS) $(LDFLAGS)
+$(NAME): $(OBJS) $(UTILSOBJS) $(PARSEROBJS) $(DECLARATION_OBJS) $(RULES_OBJS)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(UTILSOBJS) $(PARSEROBJS) $(DECLARATION_OBJS) $(RULES_OBJS) $(LDFLAGS)
 
 clean:
 	rm -f $(OBJDIR)/*.o

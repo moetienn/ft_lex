@@ -1,5 +1,18 @@
 #include "../includes/lex.h"
-#include "../includes/first_section/first_section.h"
+#include "../includes/declaration/first_section.h"
+
+void	init_lex(t_lex *lex)
+{
+	if (!lex)
+		return;
+	// Initialize declaration_code to NULL
+	lex->declaration_code = NULL;
+	lex->macros_list.list = NULL;
+	lex->macros_list.count = 0;
+	lex->macros_list.capacity = 0;
+	init_macros_list(&lex->macros_list);
+	init_rules_list(&lex->rules_list);
+}
 
 void    ft_lex(const char *filename)
 {
@@ -18,14 +31,13 @@ void    ft_lex(const char *filename)
 	parse_file(&parser);
 
 	// Initialize macros in t_lex
-	lex.macros_list.list = NULL;
-	lex.macros_list.count = 0;
-	lex.macros_list.capacity = 0;
+	init_lex(&lex);
 
 	// collect declarations
+	lex.parser = parser;
 	collect_first_section(&parser, &lex);
 	// collect rules
-	// collect_second_section(&parser);
+	collect_rules(&lex);
 	// collect user code
 	// collect_third_section(&parser);
 
