@@ -15,6 +15,9 @@ DECLARATION = srcs/declaration/first_section.c \
 				srcs/declaration/macros.c
 
 RULES = srcs/rules/rules.c \
+			srcs/rules/pattern_to_macro.c \
+			srcs/rules/extract_pattern.c \
+			srcs/rules/extract_actions.c \
 			srcs/rules/utils_rules.c
 
 OBJDIR= obj

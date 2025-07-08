@@ -1,6 +1,11 @@
 #include "../../includes/lex.h"
 #include "../../includes/parser.h"
 
+bool    is_whitespace(char c)
+{
+    return (c == ' ' || c == '\t' || c == '\n');
+}
+
 void    free_parser(t_parser *parser)
 {
 	if (!parser)
