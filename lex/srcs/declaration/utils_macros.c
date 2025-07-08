@@ -1,4 +1,4 @@
-#include "../../includes/first_section/macros.h"
+#include "../../includes/declaration/macros.h"
 
 void    free_macros_list(t_macros_list *macros_list)
 {
