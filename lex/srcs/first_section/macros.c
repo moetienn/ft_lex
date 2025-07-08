@@ -1,37 +1,71 @@
-#include "../../includes/first_section/macros.h"
+#include "../../includes/lex.h"
 
-void    free_macros_list(t_macros_list *macros_list)
+char	*extract_macro_name(const char *section, size_t *i)
 {
-    for (size_t i = 0; i < macros_list->count; i++)
-    {
-        free(macros_list->list[i].name);
-        free(macros_list->list[i].value);
-    }
-    free(macros_list->list);
+	size_t	start = *i;
+	char	*name = NULL;
+
+	while (section[*i] && section[*i] != ' ' && section[*i] != '[')
+	{
+		(*i)++;
+	}
+	size_t len = *i - start;
+	name = malloc(len + 1);
+	if (!name)
+	{
+		perror("Memory allocation failed");
+		return NULL;
+	}
+	strncpy(name, &section[start], len);
+	name[len] = '\0';
+	return name;
 }
 
-void	add_macro(t_macros_list *macros_list, const char *name, const char *value)
+char	*extract_macro_value(const char *section, size_t *i)
 {
-    if (macros_list->count >= macros_list->capacity)
-    {
-        size_t new_capacity = macros_list->capacity == 0 ? 1 : macros_list->capacity * 2;
-        t_macro *new_list = realloc(macros_list->list, new_capacity * sizeof(t_macro));
-        if (!new_list)
-        {
-            perror("Failed to allocate memory for macros list");
-            exit(EXIT_FAILURE);
-        }
-        macros_list->list = new_list;
-        macros_list->capacity = new_capacity;
-    }
-    macros_list->list[macros_list->count].name = strdup(name);
-    macros_list->list[macros_list->count].value = strdup(value);
-    macros_list->count++;
+	size_t	start = *i;
+	char	*value = NULL;
+
+	while (section[*i] && section[*i] != '\n')
+	{
+		(*i)++;
+	}
+	size_t len = *i - start;
+	value = malloc(len + 1);
+	if (!value)
+	{
+		perror("Memory allocation failed");
+		return NULL;
+	}
+	strncpy(value, &section[start], len);
+	value[len] = '\0';
+	return (value);
 }
 
-void	init_macros_list(t_macros_list *macros_list)
+void	collect_macros(t_lex *lex, size_t *i)
 {
-    macros_list->list = NULL;
-    macros_list->count = 0;
-    macros_list->capacity = 0;
+	char	*name = NULL;
+	char	*value = NULL;
+
+	printf("Collecting macros...\n");
+	while (lex->parser.first_section[*i])
+	{
+		if (lex->parser.first_section[*i] != ' ' && lex->parser.first_section[*i] != '\t' && lex->parser.first_section[*i] != '\n' && lex->parser.first_section[*i] != '[')
+			name = extract_macro_name(lex->parser.first_section, i);
+		if (lex->parser.first_section[*i] == '[')
+			value = extract_macro_value(lex->parser.first_section, i);
+		if (name != NULL && value != NULL)
+		{
+			add_macro(&lex->macros_list, name, value);
+			free(name);
+			free(value);
+			name = NULL;
+			value = NULL;
+		}
+		(*i)++;
+	}
+	if (name != NULL)
+		free(name);
+	if (value != NULL)
+		free(value);
 }

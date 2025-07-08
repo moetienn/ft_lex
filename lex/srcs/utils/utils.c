@@ -27,4 +27,5 @@ void    free_lex(t_lex *lex)
         return;
     if (lex->declaration_code)
         free(lex->declaration_code);
+    free_macros_list(&lex->macros_list);
 }

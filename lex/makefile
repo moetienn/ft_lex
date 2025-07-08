@@ -11,6 +11,7 @@ PARSER = srcs/parser/parse_file.c \
 			srcs/parser/init_parser.c
 
 FIRST_SECTION = srcs/first_section/first_section.c \
+				srcs/first_section/utils_macros.c \
 				srcs/first_section/macros.c
 
 OBJDIR= obj

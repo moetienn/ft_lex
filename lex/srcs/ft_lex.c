@@ -17,6 +17,11 @@ void    ft_lex(const char *filename)
 	parser.filename = strdup(filename);
 	parse_file(&parser);
 
+	// Initialize macros in t_lex
+	lex.macros_list.list = NULL;
+	lex.macros_list.count = 0;
+	lex.macros_list.capacity = 0;
+
 	// collect declarations
 	collect_first_section(&parser, &lex);
 	// collect rules
