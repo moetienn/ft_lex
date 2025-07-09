@@ -23,7 +23,19 @@ void    add_rule(t_rules_list *rules_list, const char *pattern, const char *acti
         rules_list->capacity = new_capacity;
     }
     rules_list->list[rules_list->count].pattern = strdup(pattern);
+    printf("Pattern: %s\n", rules_list->list[rules_list->count].pattern);
+    printf("size of pattern: %zu\n", strlen(rules_list->list[rules_list->count].pattern));
+    if (!rules_list->list[rules_list->count].pattern)
+    {
+        perror("Failed to duplicate pattern string");
+        exit(EXIT_FAILURE);
+    }
     rules_list->list[rules_list->count].action = strdup(action);
+    if (!rules_list->list[rules_list->count].action)
+    {
+        perror("Failed to duplicate action string");
+        exit(EXIT_FAILURE);
+    }
     rules_list->count++;
 }
 
@@ -38,6 +50,6 @@ void    free_rules_list(t_rules_list *rules_list)
     }
     free(rules_list->list);
     rules_list->list = NULL;
-    rules_list->count = 0;
+    // rules_list->count = 0;
     rules_list->capacity = 0;
 }

@@ -8,4 +8,5 @@ void	build_nfa(t_lex *lex)
 	printf("NFA start state initialized.\n");
 	// 1st step: tokenize the regex patterns
 	tokenize_patterns(lex);
+	printf("Tokenization complete.\n");
 }

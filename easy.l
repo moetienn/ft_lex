@@ -7,6 +7,8 @@ DIGIT   [0-9]
 %%
 
 {DIGIT}+        { printf("NUMBER: %s\n", yytext); }
+"+"|"-"        	{ printf("OPERATOR: %s\n", yytext); }
+[ \t]+          { /* ignorer espaces et tabulations */ }
 
 %%
 
