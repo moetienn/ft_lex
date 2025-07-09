@@ -93,3 +93,30 @@ void	alternation_token(t_token *current, t_lex *lex, size_t i, size_t *j)
 	}
 	(*j)--;
 }
+
+void	kleene_star_token(t_token *current, t_lex *lex, size_t i, size_t *j)
+{
+	size_t start = *j;
+	while (lex->rules_list.list[i].pattern[*j] == '*' && lex->rules_list.list[i].pattern[*j] != '\0')
+		(*j)++;
+	if (*j > start)
+	{
+		current->value = realloc(current->value, *j - start + 1);
+		if (!current->value)
+		{
+			perror("Memory allocation failed for kleene star token value");
+			exit(EXIT_FAILURE);
+		}
+		strncpy(current->value, &lex->rules_list.list[i].pattern[start], *j - start);
+		current->value[*j - start] = '\0';
+	}
+	else
+	{
+		current->value = strdup("*");
+		if (!current->value)
+		{
+			perror("Memory allocation failed for kleene star token value");
+			exit(EXIT_FAILURE);
+		}
+	}
+}
