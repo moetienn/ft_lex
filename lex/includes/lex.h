@@ -20,9 +20,11 @@ typedef struct s_lex
 	t_rules_list rules_list;
 	// 3 rd section of the lexer file
 	char	*user_code;
-
 	// NFA
-	t_token *nfa_start; // start state of the NFA
+	// create a linked list that hold the list of t_token *nfa
+
+	// the NFA is a linked list of tokens
+	t_token	**token_list; // linked list of tokens
 
 }   t_lex;
 

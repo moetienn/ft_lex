@@ -11,7 +11,6 @@ typedef enum e_token_type
 	TOKEN_CLASS,           // character class [ ... ]
 	TOKEN_QUOTE,           // quoted string "..."
 	TOKEN_ESCAPE,          // escape sequence \x
-	TOKEN_MACRO,           // macro reference {NAME}
 	TOKEN_CONCAT,          // explicit concatenation operator ·
 	TOKEN_ALTERNATION,     // |
 	TOKEN_KLEENE_STAR,     // *
@@ -30,9 +29,10 @@ typedef struct s_token {
 }   t_token;
 
 // utils
-void			init_token(t_token **token);
-void			free_token(t_token *head);
-void			add_token(t_token **head, t_token	*tok);
-struct s_token	*token_new(t_token_type type, const char *value);
+void			add_next_token(t_token **current, t_token_type type, const char *value);
+void			initialize_first_token(t_token **token_list, t_token **current, t_token_type type);
+t_token_type	get_token_type(char c);
+void			free_token_list(t_token **token_list);
+void			init_token_list(t_token ***token_list, size_t count);
 
 #endif
