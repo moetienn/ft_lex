@@ -2,6 +2,7 @@
     "files.associations": {
         "parser.h": "c",
         "stdio.h": "c",
-        "macros.h": "c"
+        "macros.h": "c",
+        "lex.h": "c"
     }
 }

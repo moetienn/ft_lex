@@ -6,10 +6,7 @@ DIGIT   [0-9]
 
 %%
 
-"+"|"-"         { printf("OPERATOR: %s\n", yytext); }
-[ \t]+          { /* ignorer espaces et tabulations */ }
-\n              { /* compter ou traiter les retours à la ligne */ }
-.               { printf("OTHER: %c\n", *yytext); }
+{DIGIT}+        { printf("NUMBER: %s\n", yytext); }
 
 %%
 

@@ -36,6 +36,6 @@ void    free_lex(t_lex *lex)
         free(lex->user_code);
     free_macros_list(&lex->macros_list);
     free_rules_list(&lex->rules_list);
-    if (lex->nfa_start)
-        free_token(lex->nfa_start);
+    if (lex->token_list)
+        free_token_list(lex->token_list);
 }
