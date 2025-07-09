@@ -44,6 +44,13 @@ char	*append_macro(const char *str, size_t *i, char *macro, size_t start);
 char	*pattern_to_macro(const char *str, size_t *i, t_macros_list *macros_list);
 void    collect_rules(t_lex *lex);
 
+// TOKEN IDENTIFICATION
+
+void	class_token(t_token *current, t_lex *lex, size_t i, size_t *j);
+void	plus_token(t_token *current, t_lex *lex, size_t i, size_t *j);
+void	quote_token(t_token *current, t_lex *lex, size_t i, size_t *j);
+void	alternation_token(t_token *current, t_lex *lex, size_t i, size_t *j);
+
 // NFA
 
 void    tokenize_patterns(t_lex *lex);

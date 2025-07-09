@@ -23,17 +23,29 @@ t_token_type get_token_type(char c)
         return TOKEN_CHAR; // Default to literal character
 }
 
-void    free_token_list(t_token **token_list)
+void	free_token_list(t_token **token_list, size_t count)
 {
-	if (!token_list)
-		return;
+    printf("Freeing token list...\n");
+    if (!token_list)
+        return;
 
-	for (size_t i = 0; token_list[i]; i++)
-	{
-		free(token_list[i]->value);
-		free(token_list[i]);
-	}
-	free(token_list);
+    printf("Token list count: %zu\n", count);
+    for (size_t i = 0; i < count; i++)
+    {
+        t_token *current = token_list[i];
+        while (current)
+        {
+            t_token *next = current->next; // Save the next pointer
+            if (current->value)
+            {
+                printf("Freeing token value: %s\n", current->value);
+                free(current->value);
+            }
+            free(current); // Free the current node
+            current = next; // Move to the next node
+        }
+    }
+    free(token_list);
 }
 
 void	init_token_list(t_token ***token_list, size_t count)
@@ -42,15 +54,11 @@ void	init_token_list(t_token ***token_list, size_t count)
 		return;
 
 	printf("count : %zu\n", count);
-	*token_list = malloc(sizeof(t_token *) * count);
+	*token_list = calloc(count, sizeof(t_token *)); // Use calloc to initialize all entries to NULL
 	if (!*token_list)
 	{
 		perror("Failed to allocate memory for token list");
 		exit(EXIT_FAILURE);
-	}
-	for (size_t i = 0; i < count; i++)
-	{
-		(*token_list)[i] = NULL; // Initialize each token list entry to NULL
 	}
 }
 
@@ -63,8 +71,9 @@ void	add_next_token(t_token **current, t_token_type type, const char *value)
         perror("Memory allocation failed for next token");
         exit(EXIT_FAILURE);
     }
+	printf("Adding next token of type: %d\n", type);
     (*current)->next->type = type;
-    (*current)->next->value = malloc(1);
+    (*current)->next->value = NULL;
     (*current)->next->next = NULL;
     *current = (*current)->next; // Move the current pointer to the newly created token
 }

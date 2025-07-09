@@ -23,6 +23,9 @@ char	*extract_pattern(const char *str, size_t *i)
 		{
 			opened = false;
 			(*i)++;
+			if (is_whitespace(str[*i]))
+				break;
+
 		}
 		if ((str[*i] == '\'' || str[*i] == '\"') && opened == false)
 		{

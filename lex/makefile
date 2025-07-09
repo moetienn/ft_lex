@@ -22,6 +22,7 @@ RULES = srcs/rules/rules.c \
 
 NFA = srcs/nfa/nfa.c \
 		srcs/nfa/tokenize.c \
+		srcs/nfa/token_identification.c \
 		srcs/nfa/token_utils.c
 
 OBJDIR= obj
