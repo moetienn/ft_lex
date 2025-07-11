@@ -121,6 +121,7 @@ void	kleene_star_token(t_token *current, t_lex *lex, size_t i, size_t *j)
 			exit(EXIT_FAILURE);
 		}
 	}
+	(*j)--;
 }
 
 void	escape_token(t_token *current, t_lex *lex, size_t i, size_t *j)
@@ -201,6 +202,35 @@ void	right_paren_token(t_token *current, t_lex *lex, size_t i, size_t *j)
 	current->value[1] = '\0';
 }
 
+void	quantifier_token(t_token *current, t_lex *lex, size_t i, size_t *j)
+{
+	size_t start = *j;
+	while (lex->rules_list.list[i].pattern[*j] == '{' || lex->rules_list.list[i].pattern[*j] == '}' || 
+		   lex->rules_list.list[i].pattern[*j] == ',' || isdigit(lex->rules_list.list[i].pattern[*j]))
+	{
+		(*j)++;
+	}
+	if (*j > start)
+	{
+		current->value = realloc(current->value, *j - start + 1);
+		if (!current->value)
+		{
+			perror("Memory allocation failed for quantifier token value");
+			exit(EXIT_FAILURE);
+		}
+		strncpy(current->value, &lex->rules_list.list[i].pattern[start], *j - start);
+		current->value[*j - start] = '\0';
+	}
+	else
+	{
+		current->value = strdup("{}");
+		if (!current->value)
+		{
+			perror("Memory allocation failed for quantifier token value");
+			exit(EXIT_FAILURE);
+		}
+	}
+}
 
 void	char_token(t_token *current, t_lex *lex, size_t i, size_t *j)
 {
@@ -212,5 +242,5 @@ void	char_token(t_token *current, t_lex *lex, size_t i, size_t *j)
 	}
 	current->value[0] = lex->rules_list.list[i].pattern[*j];
 	current->value[1] = '\0';
-	(*j)++;
+	// (*j)++;
 }

@@ -20,6 +20,8 @@ void	handle_token_type(t_token *current, t_lex *lex, size_t i, size_t *j, t_toke
 		left_paren_token(current, lex, i, j);
 	else if (type == TOKEN_RPAREN)
 		right_paren_token(current, lex, i, j);
+	else if (type == TOKEN_QUANTIFIER)
+		quantifier_token(current, lex, i, j);
 	else if (type == TOKEN_CHAR)
 		char_token(current, lex, i, j);
 }
