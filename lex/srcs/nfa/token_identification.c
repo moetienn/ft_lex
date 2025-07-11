@@ -43,6 +43,9 @@ void	plus_token(t_token *current, t_lex *lex, size_t i, size_t *j)
 			exit(EXIT_FAILURE);
 		}
 	}
+	printf("Plus token identified\n");
+	printf("char j = %c\n", lex->rules_list.list[i].pattern[*j]);
+	(*j)--;
 }
 
 void	quote_token(t_token *current, t_lex *lex, size_t i, size_t *j)
@@ -140,6 +143,74 @@ void	escape_token(t_token *current, t_lex *lex, size_t i, size_t *j)
         }
         strncpy(current->value, &lex->rules_list.list[i].pattern[start], escape_length);
         current->value[escape_length] = '\0';
-        (*j)++;
     }
+}
+
+void	optional_token(t_token *current, t_lex *lex, size_t i, size_t *j)
+{
+	size_t start = *j;
+	while (lex->rules_list.list[i].pattern[*j] == '?' && lex->rules_list.list[i].pattern[*j] != '\0')
+		(*j)++;
+	if (*j > start)
+	{
+		current->value = realloc(current->value, *j - start + 1);
+		if (!current->value)
+		{
+			perror("Memory allocation failed for optional token value");
+			exit(EXIT_FAILURE);
+		}
+		strncpy(current->value, &lex->rules_list.list[i].pattern[start], *j - start);
+		current->value[*j - start] = '\0';
+	}
+	else
+	{
+		current->value = strdup("?");
+		if (!current->value)
+		{
+			perror("Memory allocation failed for optional token value");
+			exit(EXIT_FAILURE);
+		}
+	}
+}
+
+void	left_paren_token(t_token *current, t_lex *lex, size_t i, size_t *j)
+{
+	(void)i;
+	printf("Left parenthesis token identified\n");
+	current->value = strdup("(");
+	if (!current->value)
+	{
+		perror("Memory allocation failed for left parenthesis token value");
+		exit(EXIT_FAILURE);
+	}
+	current->value[0] = lex->rules_list.list[i].pattern[*j];
+	current->value[1] = '\0';
+}
+
+void	right_paren_token(t_token *current, t_lex *lex, size_t i, size_t *j)
+{
+	(void)i;
+	(void)j;
+	current->value = strdup(")");
+	if (!current->value)
+	{
+		perror("Memory allocation failed for right parenthesis token value");
+		exit(EXIT_FAILURE);
+	}
+	current->value[0] = lex->rules_list.list[i].pattern[*j];
+	current->value[1] = '\0';
+}
+
+
+void	char_token(t_token *current, t_lex *lex, size_t i, size_t *j)
+{
+	current->value = malloc(2); // Allocate memory for a single character + null terminator
+	if (!current->value)
+	{
+		perror("Memory allocation failed for char token value");
+		exit(EXIT_FAILURE);
+	}
+	current->value[0] = lex->rules_list.list[i].pattern[*j];
+	current->value[1] = '\0';
+	(*j)++;
 }

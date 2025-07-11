@@ -3,7 +3,7 @@
 
 t_token_type get_token_type(char c)
 {
-	if (c == '[')
+    if (c == '[')
 		return TOKEN_CLASS;
 	else if (c == '\"')
 		return TOKEN_QUOTE;
