@@ -7,6 +7,8 @@ t_token_type get_token_type(char c)
 		return TOKEN_CLASS;
 	else if (c == '\"')
 		return TOKEN_QUOTE;
+    else if (c == '\\')
+        return TOKEN_ESCAPE;
     else if (c == '|')
         return TOKEN_ALTERNATION;
     else if (c == '*')
@@ -29,7 +31,6 @@ void	free_token_list(t_token **token_list, size_t count)
     if (!token_list)
         return;
 
-    printf("Token list count: %zu\n", count);
     for (size_t i = 0; i < count; i++)
     {
         t_token *current = token_list[i];
@@ -38,7 +39,6 @@ void	free_token_list(t_token **token_list, size_t count)
             t_token *next = current->next; // Save the next pointer
             if (current->value)
             {
-                printf("Freeing token value: %s\n", current->value);
                 free(current->value);
             }
             free(current); // Free the current node
@@ -53,7 +53,6 @@ void	init_token_list(t_token ***token_list, size_t count)
 	if (!token_list)
 		return;
 
-	printf("count : %zu\n", count);
 	*token_list = calloc(count, sizeof(t_token *)); // Use calloc to initialize all entries to NULL
 	if (!*token_list)
 	{
@@ -71,7 +70,6 @@ void	add_next_token(t_token **current, t_token_type type, const char *value)
         perror("Memory allocation failed for next token");
         exit(EXIT_FAILURE);
     }
-	printf("Adding next token of type: %d\n", type);
     (*current)->next->type = type;
     (*current)->next->value = NULL;
     (*current)->next->next = NULL;

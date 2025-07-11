@@ -23,8 +23,6 @@ void    add_rule(t_rules_list *rules_list, const char *pattern, const char *acti
         rules_list->capacity = new_capacity;
     }
     rules_list->list[rules_list->count].pattern = strdup(pattern);
-    printf("Pattern: %s\n", rules_list->list[rules_list->count].pattern);
-    printf("size of pattern: %zu\n", strlen(rules_list->list[rules_list->count].pattern));
     if (!rules_list->list[rules_list->count].pattern)
     {
         perror("Failed to duplicate pattern string");

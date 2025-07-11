@@ -10,7 +10,7 @@ typedef enum e_token_type
 	TOKEN_CHAR,            // single character (literal)
 	TOKEN_CLASS,           // character class [ ... ]
 	TOKEN_QUOTE,           // quoted string "..."
-	TOKEN_ESCAPE,          // escape sequence \x
+	TOKEN_ESCAPE,          // escape sequence \x or \n or \t etc.
 	TOKEN_CONCAT,          // explicit concatenation operator ·
 	TOKEN_ALTERNATION,     // |
 	TOKEN_KLEENE_STAR,     // *

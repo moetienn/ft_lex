@@ -12,6 +12,8 @@ void	handle_token_type(t_token *current, t_lex *lex, size_t i, size_t *j, t_toke
         alternation_token(current, lex, i, j);
 	else if (type == TOKEN_KLEENE_STAR)
 		kleene_star_token(current, lex, i, j);
+	else if (type == TOKEN_ESCAPE)
+		escape_token(current, lex, i, j);
 }
 
 void	process_pattern_tokens(t_lex *lex, size_t i, size_t pattern_length, t_token **current)

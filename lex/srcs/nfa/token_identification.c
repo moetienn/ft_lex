@@ -2,7 +2,6 @@
 
 void	class_token(t_token *current, t_lex *lex, size_t i, size_t *j)
 {
-	printf("token class\n");
 	size_t start = *j;
 	while (lex->rules_list.list[i].pattern[*j] != ']' && lex->rules_list.list[i].pattern[*j] != '\0')
 		(*j)++;
@@ -119,4 +118,28 @@ void	kleene_star_token(t_token *current, t_lex *lex, size_t i, size_t *j)
 			exit(EXIT_FAILURE);
 		}
 	}
+}
+
+void	escape_token(t_token *current, t_lex *lex, size_t i, size_t *j)
+{
+    size_t start = *j;
+    *j += 1;
+    if (lex->rules_list.list[i].pattern[*j] == '\0')
+    {
+        fprintf(stderr, "Error: Escape sequence at end of pattern in rule %zu\n", i);
+        exit(EXIT_FAILURE);
+    }
+    else
+    {
+        size_t escape_length = 2; // Escape sequence length (e.g., \n, \t)
+        current->value = malloc(escape_length + 1); // Allocate memory for escape sequence + null terminator
+        if (!current->value)
+        {
+            perror("Memory allocation failed for escape token value");
+            exit(EXIT_FAILURE);
+        }
+        strncpy(current->value, &lex->rules_list.list[i].pattern[start], escape_length);
+        current->value[escape_length] = '\0';
+        (*j)++;
+    }
 }
