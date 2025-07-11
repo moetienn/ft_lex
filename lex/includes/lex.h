@@ -52,6 +52,10 @@ void	quote_token(t_token *current, t_lex *lex, size_t i, size_t *j);
 void	alternation_token(t_token *current, t_lex *lex, size_t i, size_t *j);
 void	kleene_star_token(t_token *current, t_lex *lex, size_t i, size_t *j);
 void	escape_token(t_token *current, t_lex *lex, size_t i, size_t *j);
+void	char_token(t_token *current, t_lex *lex, size_t i, size_t *j);
+void	optional_token(t_token *current, t_lex *lex, size_t i, size_t *j);
+void	left_paren_token(t_token *current, t_lex *lex, size_t i, size_t *j);
+void	right_paren_token(t_token *current, t_lex *lex, size_t i, size_t *j);
 
 // NFA
 
