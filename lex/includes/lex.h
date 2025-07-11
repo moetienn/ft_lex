@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include "parser.h"
 #include "declaration/macros.h"
 #include "rules/rules.h"
@@ -56,9 +57,11 @@ void	char_token(t_token *current, t_lex *lex, size_t i, size_t *j);
 void	optional_token(t_token *current, t_lex *lex, size_t i, size_t *j);
 void	left_paren_token(t_token *current, t_lex *lex, size_t i, size_t *j);
 void	right_paren_token(t_token *current, t_lex *lex, size_t i, size_t *j);
+void	quantifier_token(t_token *current, t_lex *lex, size_t i, size_t *j);
 
 // NFA
 
+void    add_concat_tokens(t_lex *lex);
 void    tokenize_patterns(t_lex *lex);
 void    build_nfa(t_lex *lex);
 
