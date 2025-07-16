@@ -38,4 +38,6 @@ void    free_lex(t_lex *lex)
     free_rules_list(&lex->rules_list);
     if (lex->token_list)
         free_token_list(lex->token_list, lex->rules_list.count);
+    if (lex->rpn_list)
+        free_token_list(lex->rpn_list, lex->rules_list.count);
 }

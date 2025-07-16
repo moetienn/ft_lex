@@ -46,7 +46,6 @@ void	get_section_loop(t_parser *parser)
 
 void	parse_file(t_parser *parser)
 {
-	printf("Parsing file...\n");
 	if (!check_parser(parser))
 	{
 		fprintf(stderr, "Error: Invalid parser state.\n");

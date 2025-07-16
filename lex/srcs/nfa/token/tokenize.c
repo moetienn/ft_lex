@@ -43,7 +43,6 @@ void	process_pattern_tokens(t_lex *lex, size_t i, size_t pattern_length, t_token
 
 void	tokenize_patterns(t_lex *lex)
 {
-	printf("Tokenizing patterns...\n");
 	for (size_t i = 0; i < lex->rules_list.count; i++)
 	{
 		if (!lex->rules_list.list[i].pattern) // Ensure pattern is valid
