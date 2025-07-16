@@ -26,6 +26,8 @@ typedef struct s_lex
 
 	// the NFA is a linked list of tokens
 	t_token	**token_list; // linked list of tokens
+	// RPN
+	t_token	**rpn_list; // linked list of tokens in RPN
 
 }   t_lex;
 
@@ -58,10 +60,20 @@ void	optional_token(t_token *current, t_lex *lex, size_t i, size_t *j);
 void	left_paren_token(t_token *current, t_lex *lex, size_t i, size_t *j);
 void	right_paren_token(t_token *current, t_lex *lex, size_t i, size_t *j);
 void	quantifier_token(t_token *current, t_lex *lex, size_t i, size_t *j);
-
-// NFA
-
 void    add_concat_tokens(t_lex *lex);
+
+// -------- NFA --------
+
+// rpn
+void	rpn(t_lex *lex);
+// stack
+void    init_stack(t_stack *stack, size_t capacity);
+void	push_stack(t_stack *stack, t_token *token);
+t_token	*pop_stack(t_stack *stack);
+// shunting yard utils
+bool    is_operand(t_token_type type);
+bool    is_operator(t_token_type type);
+
 void    tokenize_patterns(t_lex *lex);
 void    build_nfa(t_lex *lex);
 

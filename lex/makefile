@@ -21,10 +21,13 @@ RULES = srcs/rules/rules.c \
 			srcs/rules/utils_rules.c
 
 NFA = srcs/nfa/nfa.c \
-		srcs/nfa/tokenize.c \
-		srcs/nfa/token_identification.c \
-		srcs/nfa/add_concat_token.c \
-		srcs/nfa/token_utils.c
+		srcs/nfa/token/tokenize.c \
+		srcs/nfa/token/token_identification.c \
+		srcs/nfa/token/add_concat_token.c \
+		srcs/nfa/token/token_utils.c \
+		srcs/nfa/rpn/rpn.c \
+		srcs/nfa/rpn/shunting_yard_utils.c \
+		srcs/nfa/rpn/stack.c
 
 OBJDIR= obj
 OBJS= $(addprefix $(OBJDIR)/, $(SRCS:.c=.o))

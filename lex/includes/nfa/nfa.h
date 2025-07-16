@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+
 typedef enum e_token_type
 {
 	TOKEN_CHAR,            // single character (literal)
@@ -17,15 +18,23 @@ typedef enum e_token_type
 	TOKEN_PLUS,            // +
 	TOKEN_OPTIONAL,        // ?
 	TOKEN_LPAREN,          // (
-	TOKEN_RPAREN,          // )
-	TOKEN_QUANTIFIER,      // {m} or {m,n}
-}   t_token_type;
-
-typedef struct s_token {
+		TOKEN_RPAREN,          // )
+		TOKEN_QUANTIFIER,      // {m} or {m,n}
+	}   t_token_type;
+	
+typedef struct s_token
+{
 	t_token_type	type;
 	char			*value; // For literals, this will hold the actual string
 	struct s_token	*next; // For linked list of tokens
-}   t_token;
+}	t_token;
+	
+typedef struct s_stack
+{
+	t_token	**data;
+	size_t	top;
+	size_t	capacity;
+}	t_stack;
 
 // utils
 void			add_next_token(t_token **current, t_token_type type, const char *value);

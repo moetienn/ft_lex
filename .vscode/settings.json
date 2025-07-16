@@ -3,6 +3,7 @@
         "parser.h": "c",
         "stdio.h": "c",
         "macros.h": "c",
-        "lex.h": "c"
+        "lex.h": "c",
+        "nfa.h": "c"
     }
 }

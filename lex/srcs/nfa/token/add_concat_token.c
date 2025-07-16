@@ -1,4 +1,4 @@
-# include "../../includes/lex.h"
+# include "../../../includes/lex.h"
 
 bool    is_atom_quantif_rparen(t_token *token)
 {
@@ -67,7 +67,7 @@ void    add_concat_tokens(t_lex *lex)
             current = current->next;
         }
     }
-    printf("Concatenation tokens added.\n");
+    // printf("Concatenation tokens added.\n");
     for (size_t i = 0; i < lex->rules_list.count; i++)
 	{
 		printf("Tokens for Rule %zu:\n", i);
