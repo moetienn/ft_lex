@@ -47,7 +47,6 @@ void	collect_macros(t_lex *lex, size_t *i)
 	char	*name = NULL;
 	char	*value = NULL;
 
-	printf("Collecting macros...\n");
 	while (lex->parser.first_section[*i])
 	{
 		if (lex->parser.first_section[*i] != ' ' && lex->parser.first_section[*i] != '\t' && lex->parser.first_section[*i] != '\n' && lex->parser.first_section[*i] != '[')

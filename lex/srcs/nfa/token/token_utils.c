@@ -29,7 +29,6 @@ t_token_type get_token_type(char c)
 
 void	free_token_list(t_token **token_list, size_t count)
 {
-	printf("Freeing token list...\n");
 	if (!token_list)
 		return;
 

@@ -16,6 +16,5 @@ int	init_parser(t_parser *parser)
 		return (1);
 	}
 	parser->buffer[0] = '\0'; // Initialize buffer to empty string
-	printf("Parser initialized\n");
 	return (0);
 }

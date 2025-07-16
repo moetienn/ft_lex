@@ -44,7 +44,6 @@ bool    is_atom_opengroup(t_token *token)
 
 void    add_concat_tokens(t_lex *lex)
 {
-    printf("Adding concatenation tokens...\n");
     for (size_t i = 0; i < lex->rules_list.count; i++)
     {
         t_token *current = lex->token_list[i];
@@ -67,15 +66,4 @@ void    add_concat_tokens(t_lex *lex)
             current = current->next;
         }
     }
-    // printf("Concatenation tokens added.\n");
-    for (size_t i = 0; i < lex->rules_list.count; i++)
-	{
-		printf("Tokens for Rule %zu:\n", i);
-		t_token *current = lex->token_list[i];
-		while (current)
-		{
-			printf("  Type: %d, Value: %s\n", current->type, current->value ? current->value : "NULL");
-			current = current->next;
-		}
-	}
 }

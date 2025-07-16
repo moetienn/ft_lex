@@ -26,6 +26,7 @@ NFA = srcs/nfa/nfa.c \
 		srcs/nfa/token/add_concat_token.c \
 		srcs/nfa/token/token_utils.c \
 		srcs/nfa/rpn/rpn.c \
+		srcs/nfa/rpn/rpn_utils.c \
 		srcs/nfa/rpn/shunting_yard_utils.c \
 		srcs/nfa/rpn/stack.c
 
