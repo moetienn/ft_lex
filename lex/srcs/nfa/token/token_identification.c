@@ -1,4 +1,4 @@
-#include "../../includes/lex.h"
+#include "../../../includes/lex.h"
 
 void	class_token(t_token *current, t_lex *lex, size_t i, size_t *j)
 {
@@ -43,8 +43,6 @@ void	plus_token(t_token *current, t_lex *lex, size_t i, size_t *j)
 			exit(EXIT_FAILURE);
 		}
 	}
-	printf("Plus token identified\n");
-	printf("char j = %c\n", lex->rules_list.list[i].pattern[*j]);
 	(*j)--;
 }
 
@@ -177,7 +175,6 @@ void	optional_token(t_token *current, t_lex *lex, size_t i, size_t *j)
 void	left_paren_token(t_token *current, t_lex *lex, size_t i, size_t *j)
 {
 	(void)i;
-	printf("Left parenthesis token identified\n");
 	current->value = strdup("(");
 	if (!current->value)
 	{
@@ -242,5 +239,4 @@ void	char_token(t_token *current, t_lex *lex, size_t i, size_t *j)
 	}
 	current->value[0] = lex->rules_list.list[i].pattern[*j];
 	current->value[1] = '\0';
-	// (*j)++;
 }

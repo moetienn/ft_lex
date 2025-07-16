@@ -6,9 +6,9 @@ DIGIT   [0-9]
 
 %%
 
-{DIGIT}+        { printf("NUMBER: %s\n", yytext); }
-"+"|"-"        	{ printf("OPERATOR: %s\n", yytext); }
-[ \t]+          { /* ignorer espaces et tabulations */ }
+ab              { printf("MATCH ab\n"); }
+A*B             { printf("zero-or-more A then B: %s\n", yytext); }
+[0-9]+X         { printf("DIGITS then X: %s\n", yytext); }
 
 %%
 

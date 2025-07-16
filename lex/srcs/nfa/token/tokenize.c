@@ -1,4 +1,4 @@
-#include "../../includes/lex.h"
+#include "../../../includes/lex.h"
 
 void	handle_token_type(t_token *current, t_lex *lex, size_t i, size_t *j, t_token_type type)
 {
@@ -56,18 +56,5 @@ void	tokenize_patterns(t_lex *lex)
 		size_t pattern_length = strlen(lex->rules_list.list[i].pattern); // Get pattern length
 
 		process_pattern_tokens(lex, i, pattern_length, &current);
-	}
-	printf("Tokenization complete.\n");
-
-	// Print tokens for debugging
-	for (size_t i = 0; i < lex->rules_list.count; i++)
-	{
-		printf("Tokens for Rule %zu:\n", i);
-		t_token *current = lex->token_list[i];
-		while (current)
-		{
-			printf("  Type: %d, Value: %s\n", current->type, current->value ? current->value : "NULL");
-			current = current->next;
-		}
 	}
 }
