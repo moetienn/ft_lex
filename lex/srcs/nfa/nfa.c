@@ -1,5 +1,10 @@
 #include "../../includes/lex.h"
 
+void	build_nfa_from_rpn(t_lex *lex)
+{
+	(void)lex; // Placeholder for future implementation
+}
+
 void	build_nfa(t_lex *lex)
 {
 	// init token structure
@@ -10,4 +15,6 @@ void	build_nfa(t_lex *lex)
 	add_concat_tokens(lex);
 	// 2nd step: convert the tokenized patterns to rpn
 	rpn(lex);
+	// 3rd step: build the NFA from the RPN
+	build_nfa_from_rpn(lex);
 }
