@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+// TOKEN
 
 typedef enum e_token_type
 {
@@ -35,6 +36,32 @@ typedef struct s_stack
 	size_t	top;
 	size_t	capacity;
 }	t_stack;
+
+// NFA
+
+typedef struct s_nfa_transition t_nfa_transition;
+
+typedef struct s_nfa_state
+{
+	int				id;
+	bool			is_accept;
+	t_nfa_transition	**transitions; // Array of pointers to transition structs
+	size_t			transition_count;
+	size_t			transition_capacity; // Capacity of the transitions array
+	
+}	t_nfa_state;
+
+typedef struct s_nfa_transition
+{
+	t_nfa_state	*to;   // To state
+	char		symbol; // Transition symbol (for character transitions)
+}	t_nfa_transition;
+
+typedef struct s_nfa_fragment
+{
+	t_nfa_state		*start;
+	t_nfa_state		*accept;
+}	t_nfa_fragment;
 
 // utils
 void			add_next_token(t_token **current, t_token_type type, const char *value);

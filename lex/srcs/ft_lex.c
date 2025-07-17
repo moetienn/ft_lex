@@ -34,7 +34,6 @@ void    ft_lex(const char *filename)
 	collect_rules(&lex);
 	lex.user_code = strdup(parser.third_section);
 	free_parser(&parser);
-	// print rules for debugging
 	build_nfa(&lex);
 	free_lex(&lex);
 }
