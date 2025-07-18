@@ -89,6 +89,18 @@ void	build_nfa_from_rpn(t_lex *lex)
 			{
 				process_token_plus(frag_stack);
 			}
+			else if (current_token->type == TOKEN_CONCAT)
+			{
+			    t_nfa_fragment *right = pop_stack_frag(frag_stack);
+			    t_nfa_fragment *left = pop_stack_frag(frag_stack);
+			    t_nfa_transition *epsilon = malloc(sizeof(t_nfa_transition));
+			    epsilon->to = right->start;
+			    epsilon->symbol = '\0';
+			    add_transition(left->accept, epsilon);
+			    left->accept->is_accept = false;
+			    t_nfa_fragment *concat_fragment = init_nfa_fragment(left->start, right->accept);
+			    push_stack_frag(frag_stack, concat_fragment);
+			}
 			current_token = current_token->next;
 		}
 		t_nfa_fragment *final_fragment = pop_stack_frag(frag_stack);
