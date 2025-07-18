@@ -23,7 +23,6 @@ The goal of **ft_lex** is to demystify the inner workings of a lexical analyzer 
 - **Compile regex to an NFA**: build a Non-deterministic Finite Automaton (NFA) using Thompson's construction, which can recognize the language described by the regex.
 - **Convert NFA to DFA**: transform the NFA into a Deterministic Finite Automaton (DFA), an efficient machine for recognizing tokens.
 - **Generate C code**: output a C file containing the DFA logic, so the user can tokenize input with high performance.
-- **Handle errors gracefully**: provide clear diagnostic messages for malformed expressions or usage errors.
 
 ---
 
