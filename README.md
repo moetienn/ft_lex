@@ -61,6 +61,5 @@ Understanding and building a tool like `ft_lex` gives you insight into:
 ## Further Reading
 
 - [Regular Expressions and Finite Automata (Wikipedia)](https://en.wikipedia.org/wiki/Finite_automaton)
-- [The Dragon Book (Compilers: Principles, Techniques, and Tools)](https://en.wikipedia.org/wiki/Compilers:_Principles,_Techniques,_and_Tools)
 - [POSIX `lex` utility specification](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/lex.html)
 
