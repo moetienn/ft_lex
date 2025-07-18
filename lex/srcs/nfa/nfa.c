@@ -44,7 +44,7 @@ void    push_stack_frag(t_frag_stack *stack, t_nfa_fragment *fragment)
 void	process_token_plus(t_frag_stack *frag_stack)
 {
     t_nfa_fragment *fragment = pop_stack_frag(frag_stack);
-    t_nfa_state *new_accept = init_nfa_state(-1, false); // false ici
+    t_nfa_state *new_accept = init_nfa_state(-1, false);
 
     t_nfa_transition *loop = malloc(sizeof(t_nfa_transition));
     if (!loop)
