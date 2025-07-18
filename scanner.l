@@ -19,6 +19,9 @@ LETTER  [a-z]
 (if|else)[0-9]  { printf("KEYWORD+digit: %s\n", yytext); }
 A*B             { printf("zero-or-more A then B: %s\n", yytext); }
 (ab)?c          { printf("optional ab then c: %s\n", yytext); }
+a*b        { printf("A*B: %s\n", yytext); }
+(ab)*      { printf("(AB)*: %s\n", yytext); }
+a*b|(ab)*      { printf("a* b or (ab)*: %s\n", yytext); }
 
 %%
 

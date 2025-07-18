@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <ctype.h>
 #include "parser.h"
 #include "declaration/macros.h"
@@ -67,7 +68,8 @@ t_nfa_fragment	*init_nfa_fragment(t_nfa_state *start, t_nfa_state *accept);
 void	init_nfa(t_lex *lex);
 
 // process nfa token
-t_nfa_state *process_token_char(t_nfa_state *current_state, t_token *current_token);
+void	add_transition(t_nfa_state *state, t_nfa_transition *transition);
+t_nfa_fragment	*process_token_char(t_token *current_token);
 
 // TESTER DONT FORGET TO REMOVE
 bool	test_nfa(t_nfa_state *start_state, const char *input);
