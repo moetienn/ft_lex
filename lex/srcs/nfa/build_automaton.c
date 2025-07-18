@@ -18,7 +18,7 @@ void	add_transition(t_nfa_state *state, t_nfa_transition *transition)
 t_nfa_fragment	*process_token_char(t_token *current_token)
 {
 	t_nfa_state *start = init_nfa_state(-1, false);
-	t_nfa_state *accept = init_nfa_state(-1, true);
+	t_nfa_state *accept = init_nfa_state(-1, false);
 	t_nfa_transition *transition = malloc(sizeof(t_nfa_transition));
 	if (!transition)
 	{
