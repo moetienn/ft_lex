@@ -63,6 +63,13 @@ typedef struct s_nfa_fragment
 	t_nfa_state		*accept;
 }	t_nfa_fragment;
 
+typedef struct s_frag_stack
+{
+	t_nfa_fragment	**fragments; // Array of pointers to NFA fragments
+	size_t			top;
+	size_t			capacity;
+}	t_frag_stack;
+
 // utils
 void			add_next_token(t_token **current, t_token_type type, const char *value);
 void			initialize_first_token(t_token **token_list, t_token **current, t_token_type type);
