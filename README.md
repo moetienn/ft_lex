@@ -7,7 +7,7 @@ This project explores the theory and practice behind lexical analysis, regular e
 
 ## What is `lex`?
 
-`lex` is a program that generates lexical analyzers—also known as lexers or scanners. A lexer is a fundamental component of a compiler or interpreter: it reads an input stream and splits it into a sequence of **tokens** (words, numbers, symbols, etc.).  
+`lex` is a program that generates lexical analyzers also known as lexers or scanners. A lexer is a fundamental component of a compiler or interpreter: it reads an input stream and splits it into a sequence of **tokens** (words, numbers, symbols, etc.).  
 Tokens are the basic building blocks with which a parser can understand the structure of a programming language or data format.
 
 With `lex`, users write a set of regular-expression rules describing the patterns they want to recognize in the input. The tool then generates C code that, at runtime, efficiently finds and returns tokens according to those rules.
@@ -64,10 +64,3 @@ Understanding and building a tool like `ft_lex` gives you insight into:
 - [The Dragon Book (Compilers: Principles, Techniques, and Tools)](https://en.wikipedia.org/wiki/Compilers:_Principles,_Techniques,_and_Tools)
 - [POSIX `lex` utility specification](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/lex.html)
 
----
-
-## Author
-
-- [moetienn](https://github.com/moetienn)
-
----
