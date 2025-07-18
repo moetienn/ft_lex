@@ -13,22 +13,19 @@
 
 typedef struct s_lex
 {
-	// 1 st section of the lexer file
-	char    *declaration_code; // string that will contain the declarations between %{ and %}
-	t_macros_list macros_list; // list of macros
-	// 2 nd section of the lexer file
-	t_parser parser;
-	t_rules_list rules_list;
-	// 3 rd section of the lexer file
-	char	*user_code;
+	char			*declaration_code;
+	t_macros_list	macros_list;
+	t_parser		parser;
+	t_rules_list	rules_list;
+	char			*user_code;
 	// NFA
 	// create a linked list that hold the list of t_token *nfa
-
 	// the NFA is a linked list of tokens
-	t_token	**token_list; // linked list of tokens
+	t_token			**token_list; // linked list of tokens
 	// RPN
-	t_token	**rpn_list; // linked list of tokens in RPN
-
+	t_token			**rpn_list; // linked list of tokens in RPN
+	// NFA
+	t_nfa_fragment	*nfa_frag;
 }   t_lex;
 
 // utils
@@ -63,6 +60,17 @@ void	quantifier_token(t_token *current, t_lex *lex, size_t i, size_t *j);
 void    add_concat_tokens(t_lex *lex);
 
 // -------- NFA --------
+
+// init nfa
+t_nfa_state	*init_nfa_state(int id, bool is_accept);
+t_nfa_fragment	*init_nfa_fragment(t_nfa_state *start, t_nfa_state *accept);
+void	init_nfa(t_lex *lex);
+
+// process nfa token
+t_nfa_state *process_token_char(t_nfa_state *current_state, t_token *current_token);
+
+// TESTER DONT FORGET TO REMOVE
+bool	test_nfa(t_nfa_state *start_state, const char *input);
 
 // rpn
 void	rpn(t_lex *lex);
