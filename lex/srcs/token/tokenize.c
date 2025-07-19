@@ -1,4 +1,4 @@
-#include "../../../includes/lex.h"
+#include "../../includes/lex.h"
 
 void	handle_token_type(t_token *current, t_lex *lex, size_t i, size_t *j, t_token_type type)
 {

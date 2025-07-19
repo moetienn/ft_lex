@@ -1,5 +1,5 @@
-#include "../../../includes/lex.h"
-#include "../../../includes/nfa/nfa.h"
+#include "../../includes/lex.h"
+#include "../../includes/nfa/nfa.h"
 
 bool	priority_check(t_token *current, t_stack *operator_stack)
 {

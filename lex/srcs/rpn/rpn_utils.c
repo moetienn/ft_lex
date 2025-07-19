@@ -1,5 +1,5 @@
-#include "../../../includes/lex.h"
-#include "../../../includes/nfa/nfa.h"
+#include "../../includes/lex.h"
+#include "../../includes/nfa/nfa.h"
 
 t_token	*create_token_copy(t_token *operand)
 {

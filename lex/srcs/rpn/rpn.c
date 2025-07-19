@@ -1,5 +1,5 @@
-#include "../../../includes/lex.h"
-#include "../../../includes/nfa/nfa.h"
+#include "../../includes/lex.h"
+#include "../../includes/nfa/nfa.h"
 
 void	handle_operator(t_token *current_token, t_stack *operator_stack, t_token **rpn_list)
 {
