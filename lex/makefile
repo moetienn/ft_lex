@@ -20,18 +20,20 @@ RULES = srcs/rules/rules.c \
 			srcs/rules/extract_actions.c \
 			srcs/rules/utils_rules.c
 
+TOKEN= srcs/token/tokenize.c \
+		srcs/token/token_identification.c \
+		srcs/token/add_concat_token.c \
+		srcs/token/token_utils.c
+
+RPN= srcs/rpn/rpn.c \
+		srcs/rpn/rpn_utils.c \
+		srcs/rpn/shunting_yard_utils.c \
+		srcs/rpn/stack.c
+
 NFA = srcs/nfa/nfa.c \
 		srcs/nfa/init_nfa.c \
 		srcs/nfa/build_automaton.c \
 		srcs/nfa/nfa_utils.c \
-		srcs/nfa/token/tokenize.c \
-		srcs/nfa/token/token_identification.c \
-		srcs/nfa/token/add_concat_token.c \
-		srcs/nfa/token/token_utils.c \
-		srcs/nfa/rpn/rpn.c \
-		srcs/nfa/rpn/rpn_utils.c \
-		srcs/nfa/rpn/shunting_yard_utils.c \
-		srcs/nfa/rpn/stack.c \
 		srcs/nfa/test_nfa.c
 
 OBJDIR= obj
@@ -40,6 +42,8 @@ UTILSOBJS= $(addprefix $(OBJDIR)/, $(UTILSSRCS:.c=.o))
 PARSEROBJS= $(addprefix $(OBJDIR)/, $(PARSER:.c=.o))
 DECLARATION_OBJS= $(addprefix $(OBJDIR)/, $(DECLARATION:.c=.o))
 RULES_OBJS= $(addprefix $(OBJDIR)/, $(RULES:.c=.o))
+TOKEN_OBJS= $(addprefix $(OBJDIR)/, $(TOKEN:.c=.o))
+RPN_OBJS= $(addprefix $(OBJDIR)/, $(RPN:.c=.o))
 NFA_OBJS= $(addprefix $(OBJDIR)/, $(NFA:.c=.o))
 
 CC= cc
@@ -58,8 +62,8 @@ $(OBJDIR)/%.o: %.c $(HDR)
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(NAME): $(OBJS) $(UTILSOBJS) $(PARSEROBJS) $(DECLARATION_OBJS) $(RULES_OBJS) $(NFA_OBJS)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(UTILSOBJS) $(PARSEROBJS) $(DECLARATION_OBJS) $(RULES_OBJS) $(NFA_OBJS) $(LDFLAGS)
+$(NAME): $(OBJS) $(UTILSOBJS) $(PARSEROBJS) $(DECLARATION_OBJS) $(RULES_OBJS) $(NFA_OBJS) $(TOKEN_OBJS) $(RPN_OBJS)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(UTILSOBJS) $(PARSEROBJS) $(DECLARATION_OBJS) $(RULES_OBJS) $(NFA_OBJS) $(LDFLAGS) $(TOKEN_OBJS) $(RPN_OBJS)
 
 clean:
 	rm -f $(OBJDIR)/*.o

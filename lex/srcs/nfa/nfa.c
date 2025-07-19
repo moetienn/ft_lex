@@ -31,6 +31,8 @@ static t_nfa_fragment	*process_rule(t_token *current_token)
 			t_nfa_fragment	*fragment = process_token_char(current_token);
 			push_stack_frag(frag_stack, fragment);
 		}
+		else if (current_token->type == TOKEN_KLEENE_STAR)
+			process_token_kleene_star(frag_stack);
 		else if (current_token->type == TOKEN_PLUS)
 			process_token_plus(frag_stack);
 		else if (current_token->type == TOKEN_CONCAT)

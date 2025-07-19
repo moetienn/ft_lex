@@ -1,5 +1,5 @@
-#include "../../../includes/lex.h"
-#include "../../../includes/nfa/nfa.h"
+#include "../../includes/lex.h"
+#include "../../includes/nfa/nfa.h"
 
 void    init_stack(t_stack *stack, size_t capacity)
 {

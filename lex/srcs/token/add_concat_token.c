@@ -1,4 +1,4 @@
-# include "../../../includes/lex.h"
+# include "../../includes/lex.h"
 
 bool    is_atom_quantif_rparen(t_token *token)
 {

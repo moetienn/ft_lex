@@ -77,6 +77,7 @@ void	init_nfa(t_lex *lex);
 void	add_transition(t_nfa_state *state, t_nfa_transition *transition);
 void	process_token_plus(t_frag_stack *frag_stack);
 void	process_token_concat(t_frag_stack *frag_stack);
+void	process_token_kleene_star(t_frag_stack *frag_stack);
 t_nfa_fragment	*process_token_char(t_token *current_token);
 
 // nfa utils

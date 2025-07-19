@@ -1,4 +1,4 @@
-#include "../../../includes/lex.h"
+#include "../../includes/lex.h"
 
 void	class_token(t_token *current, t_lex *lex, size_t i, size_t *j)
 {
