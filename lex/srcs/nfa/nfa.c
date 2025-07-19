@@ -1,113 +1,86 @@
 #include "../../includes/lex.h"
 
-t_frag_stack *stack_create()
+static void	validate_rpn_list(t_lex *lex)
 {
-	t_frag_stack *stack = malloc(sizeof(t_frag_stack));
-	if (!stack)
-	{
-		perror("Failed to allocate memory for fragment stack");
-		exit(EXIT_FAILURE);
-	}
-	stack->fragments = NULL;
-	stack->top = 0;
-	stack->capacity = 0;
-	return stack;
-}
-
-t_nfa_fragment *pop_stack_frag(t_frag_stack *stack)
-{
-	if (stack->top == 0)
-	{
-		fprintf(stderr, "Error: Attempt to pop from an empty stack\n");
-		exit(EXIT_FAILURE);
-	}
-	return stack->fragments[--stack->top];
-}
-
-void    push_stack_frag(t_frag_stack *stack, t_nfa_fragment *fragment)
-{
-	if (stack->top >= stack->capacity)
-	{
-		size_t new_capacity = stack->capacity == 0 ? 1 : stack->capacity * 2;
-		t_nfa_fragment **new_fragments = realloc(stack->fragments, new_capacity * sizeof(t_nfa_fragment *));
-		if (!new_fragments)
-		{
-			perror("Failed to reallocate memory for fragment stack");
-			exit(EXIT_FAILURE);
-		}
-		stack->fragments = new_fragments;
-		stack->capacity = new_capacity;
-	}
-	stack->fragments[stack->top++] = fragment;
-}
-
-void	process_token_plus(t_frag_stack *frag_stack)
-{
-    t_nfa_fragment *fragment = pop_stack_frag(frag_stack);
-    t_nfa_state *new_accept = init_nfa_state(-1, false);
-
-    t_nfa_transition *loop = malloc(sizeof(t_nfa_transition));
-    if (!loop)
-    {
-        perror("Failed to allocate memory for NFA transition");
-        exit(EXIT_FAILURE);
-    }
-    loop->to = fragment->start;
-    loop->symbol = '\0';
-    add_transition(fragment->accept, loop);
-    t_nfa_transition *exit = malloc(sizeof(t_nfa_transition));
-    exit->to = new_accept;
-    exit->symbol = '\0';
-    add_transition(fragment->accept, exit);
-    t_nfa_fragment *plus_fragment = init_nfa_fragment(fragment->start, new_accept);
-    push_stack_frag(frag_stack, plus_fragment);
-}
-
-void	build_nfa_from_rpn(t_lex *lex)
-{
-	init_nfa(lex);
 	if (!lex->rpn_list)
 	{
 		fprintf(stderr, "Error: RPN list is not initialized\n");
 		exit(EXIT_FAILURE);
 	}
+}
 
-	for (size_t i = 0; i < lex->rules_list.count; i++)
+static t_nfa_fragment	**initialize_rule_fragments(size_t rule_count)
+{
+	t_nfa_fragment	**rule_frags = malloc(sizeof(t_nfa_fragment*) * rule_count);
+	if (!rule_frags)
+	{
+		perror("malloc failed");
+		exit(EXIT_FAILURE);
+	}
+	return (rule_frags);
+}
+
+static t_nfa_fragment	*process_rule(t_token *current_token)
+{
+	t_frag_stack	*frag_stack = stack_create();
+
+	while (current_token)
+	{
+		if (current_token->type == TOKEN_CHAR)
+		{
+			t_nfa_fragment	*fragment = process_token_char(current_token);
+			push_stack_frag(frag_stack, fragment);
+		}
+		else if (current_token->type == TOKEN_PLUS)
+			process_token_plus(frag_stack);
+		else if (current_token->type == TOKEN_CONCAT)
+			process_token_concat(frag_stack);
+		current_token = current_token->next;
+	}
+	t_nfa_fragment	*final_fragment = pop_stack_frag(frag_stack);
+	final_fragment->accept->is_accept = true;
+	return (final_fragment);
+}
+
+static void	add_epsilon_transitions(t_nfa_state *super_start, t_nfa_fragment **rule_frags, size_t rule_count)
+{
+	for (size_t i = 0; i < rule_count; ++i)
+	{
+		t_nfa_transition	*epsilon = malloc(sizeof(t_nfa_transition));
+		if (!epsilon)
+		{
+			perror("malloc failed");
+			exit(EXIT_FAILURE);
+		}
+		epsilon->to = rule_frags[i]->start;
+		epsilon->symbol = '\0';
+		add_transition(super_start, epsilon);
+	}
+}
+
+void	build_nfa_from_rpn(t_lex *lex)
+{
+	validate_rpn_list(lex);
+	size_t rule_count = lex->rules_list.count;
+	t_nfa_fragment **rule_frags = initialize_rule_fragments(rule_count);
+	for (size_t i = 0; i < rule_count; i++)
 	{
 		t_token *current_token = lex->rpn_list[i];
-		t_frag_stack *frag_stack = stack_create();
-
-		while (current_token)
-		{
-			if (current_token->type == TOKEN_CHAR)
-			{
-				t_nfa_fragment *fragment = process_token_char(current_token);
-				push_stack_frag(frag_stack, fragment);
-				// printf("[main] Pushed fragment: start=%p, accept=%p\n", fragment->start, fragment->accept);
-			}
-			else if (current_token->type == TOKEN_PLUS)
-			{
-				process_token_plus(frag_stack);
-			}
-			else if (current_token->type == TOKEN_CONCAT)
-			{
-			    t_nfa_fragment *right = pop_stack_frag(frag_stack);
-			    t_nfa_fragment *left = pop_stack_frag(frag_stack);
-			    t_nfa_transition *epsilon = malloc(sizeof(t_nfa_transition));
-			    epsilon->to = right->start;
-			    epsilon->symbol = '\0';
-			    add_transition(left->accept, epsilon);
-			    left->accept->is_accept = false;
-			    t_nfa_fragment *concat_fragment = init_nfa_fragment(left->start, right->accept);
-			    push_stack_frag(frag_stack, concat_fragment);
-			}
-			current_token = current_token->next;
-		}
-		t_nfa_fragment *final_fragment = pop_stack_frag(frag_stack);
-		// printf("[main] Poped fragment: start=%p, accept=%p\n", final_fragment->start, final_fragment->accept);
-		final_fragment->accept->is_accept = true;
-		lex->nfa_frag = final_fragment;
+		t_nfa_fragment *final_fragment = process_rule(current_token);
+		final_fragment->accept->rule_index = i;
+		rule_frags[i] = final_fragment;
 	}
+	t_nfa_state *super_start = create_new_state();
+	add_epsilon_transitions(super_start, rule_frags, rule_count);
+	lex->nfa_frag = malloc(sizeof(t_nfa_fragment));
+	if (!lex->nfa_frag)
+	{
+		perror("malloc failed");
+		exit(EXIT_FAILURE);
+	}
+	lex->nfa_frag->start = super_start;
+	lex->nfa_frag->accept = NULL;
+	lex->all_rules_frags = rule_frags;
 }
 
 void	build_nfa(t_lex *lex)
@@ -117,15 +90,7 @@ void	build_nfa(t_lex *lex)
 	tokenize_patterns(lex);
 	add_concat_tokens(lex);
 	rpn(lex);
+	init_nfa(lex);
 	build_nfa_from_rpn(lex);
-	printf("Test 'a': %s\n", test_nfa(lex->nfa_frag->start, "a") ? "ACCEPTED" : "REJECTED");
-	printf("Test 'aa': %s\n", test_nfa(lex->nfa_frag->start, "aa") ? "ACCEPTED" : "REJECTED");
-	printf("Test 'aaa': %s\n", test_nfa(lex->nfa_frag->start, "aaa") ? "ACCEPTED" : "REJECTED");
-	printf("Test 'aaaa': %s\n", test_nfa(lex->nfa_frag->start, "aaaa") ? "ACCEPTED" : "REJECTED");
-	printf("Test 'ab': %s\n", test_nfa(lex->nfa_frag->start, "ab") ? "ACCEPTED" : "REJECTED");
-	printf("Test 'aab': %s\n", test_nfa(lex->nfa_frag->start, "aab") ? "ACCEPTED" : "REJECTED");
-	printf("Test 'aaab': %s\n", test_nfa(lex->nfa_frag->start, "aaab") ? "ACCEPTED" : "REJECTED");
-	printf("Test 'b': %s\n", test_nfa(lex->nfa_frag->start, "b") ? "ACCEPTED" : "REJECTED");
-	printf("Test 'abb': %s\n", test_nfa(lex->nfa_frag->start, "abb") ? "ACCEPTED" : "REJECTED");
-	printf("Test 'abc': %s\n", test_nfa(lex->nfa_frag->start, "abc") ? "ACCEPTED" : "REJECTED");
+	run_test_suites(lex);
 }

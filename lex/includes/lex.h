@@ -11,6 +11,11 @@
 #include "rules/rules.h"
 #include "nfa/nfa.h"
 
+// ----------- TEST STRUCT -----------
+typedef struct {
+    const char *input;
+    bool expected; // true = ACCEPTED, false = REJECTED
+} t_nfa_test;
 
 typedef struct s_lex
 {
@@ -27,6 +32,7 @@ typedef struct s_lex
 	t_token			**rpn_list; // linked list of tokens in RPN
 	// NFA
 	t_nfa_fragment	*nfa_frag;
+	t_nfa_fragment **all_rules_frags;
 }   t_lex;
 
 // utils
@@ -69,11 +75,25 @@ void	init_nfa(t_lex *lex);
 
 // process nfa token
 void	add_transition(t_nfa_state *state, t_nfa_transition *transition);
+void	process_token_plus(t_frag_stack *frag_stack);
+void	process_token_concat(t_frag_stack *frag_stack);
 t_nfa_fragment	*process_token_char(t_token *current_token);
+
+// nfa utils
+t_nfa_state	*create_new_state(void);
+t_frag_stack	*stack_create(void);
+t_nfa_fragment *pop_stack_frag(t_frag_stack *stack);
+void    push_stack_frag(t_frag_stack *stack, t_nfa_fragment *fragment);
 
 // TESTER DONT FORGET TO REMOVE
 bool	test_nfa(t_nfa_state *start_state, const char *input);
-
+void run_nfa_test_suite(
+    t_nfa_state *start_state,
+    const t_nfa_test *tests,
+    size_t n_tests,
+    const char *test_suite_name
+);
+void    run_test_suites(t_lex *lex);
 // rpn
 void	rpn(t_lex *lex);
 // rpn utils
