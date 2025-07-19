@@ -23,6 +23,7 @@ RULES = srcs/rules/rules.c \
 NFA = srcs/nfa/nfa.c \
 		srcs/nfa/init_nfa.c \
 		srcs/nfa/build_automaton.c \
+		srcs/nfa/nfa_utils.c \
 		srcs/nfa/token/tokenize.c \
 		srcs/nfa/token/token_identification.c \
 		srcs/nfa/token/add_concat_token.c \

@@ -44,6 +44,7 @@ typedef struct s_nfa_transition t_nfa_transition;
 typedef struct s_nfa_state
 {
 	int				id;
+	int				rule_index;
 	bool			is_accept;
 	t_nfa_transition	**transitions; // Array of pointers to transition structs
 	size_t			transition_count;

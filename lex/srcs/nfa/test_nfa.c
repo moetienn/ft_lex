@@ -1,108 +1,155 @@
 #include "../../includes/lex.h"
 #include "../../includes/nfa/nfa.h"
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 typedef struct {
-    t_nfa_state **states;
-    size_t count;
-    size_t capacity;
+	t_nfa_state **states;
+	size_t count;
+	size_t capacity;
 } state_set;
 
-void add_state(state_set *set, t_nfa_state *state)
+void	add_state(state_set *set, t_nfa_state *state)
 {
-    for (size_t i = 0; i < set->count; i++)
-        if (set->states[i] == state)
-            return;
-    if (set->count == set->capacity)
-    {
-        set->capacity = set->capacity ? set->capacity * 2 : 8;
-        set->states = realloc(set->states, set->capacity * sizeof(t_nfa_state *));
-        if (!set->states)
-        {
-            perror("Out of memory");
-            exit(1);
-        }
-    }
-    set->states[set->count++] = state;
+	for (size_t i = 0; i < set->count; i++)
+		if (set->states[i] == state)
+			return;
+	if (set->count == set->capacity)
+	{
+		set->capacity = set->capacity ? set->capacity * 2 : 8;
+		set->states = realloc(set->states, set->capacity * sizeof(t_nfa_state *));
+		if (!set->states)
+		{
+			perror("Out of memory");
+			exit(1);
+		}
+	}
+	set->states[set->count++] = state;
 }
 
-void free_state_set(state_set *set)
+void    free_state_set(state_set *set)
 {
-    free(set->states);
-    set->states = NULL;
-    set->count = set->capacity = 0;
+	free(set->states);
+	set->states = NULL;
+	set->count = set->capacity = 0;
 }
 
-void epsilon_closure(state_set *set, t_nfa_state *state)
+void	epsilon_closure(state_set *set, t_nfa_state *state)
 {
-    add_state(set, state);
-    for (size_t i = 0; i < state->transition_count; i++)
-    {
-        t_nfa_transition *t = state->transitions[i];
-        if (t->symbol == '\0')
-        {
-            bool already = false;
-            for (size_t j = 0; j < set->count; j++)
-                if (set->states[j] == t->to)
-                    already = true;
-            if (!already)
-                epsilon_closure(set, t->to);
-        }
-    }
+	add_state(set, state);
+	for (size_t i = 0; i < state->transition_count; i++)
+	{
+		t_nfa_transition *t = state->transitions[i];
+		if (t->symbol == '\0')
+		{
+			bool already = false;
+			for (size_t j = 0; j < set->count; j++)
+				if (set->states[j] == t->to)
+					already = true;
+			if (!already)
+				epsilon_closure(set, t->to);
+		}
+	}
 }
 
-bool test_nfa(t_nfa_state *start_state, const char *input)
+int test_nfa_rule_index(t_nfa_state *start_state, const char *input)
 {
-    state_set current = {0}, next = {0};
-    epsilon_closure(&current, start_state);
+	state_set current = {0}, next = {0};
+	epsilon_closure(&current, start_state);
 
-    const char *ptr = input;
-    printf("=== NFA simulation for input: \"%s\" ===\n", input);
+	const char *ptr = input;
 
-    while (*ptr)
-    {
-        next.count = 0;
+	while (*ptr)
+	{
+		next.count = 0;
 
-        for (size_t i = 0; i < current.count; i++)
-        {
-            t_nfa_state *state = current.states[i];
-            // printf("At state id=%d, processing input '%c'\n", state->id, *ptr);
-            for (size_t t = 0; t < state->transition_count; t++)
-            {
-                t_nfa_transition *trans = state->transitions[t];
-                // printf("  Checking transition: symbol='%c' (to state id=%d)\n",
-                //     trans->symbol ? trans->symbol : '\0', trans->to->id);
-                if (trans->symbol == *ptr)
-                {
-                    // printf("  >> Taking normal transition to state id=%d\n", trans->to->id);
-                    epsilon_closure(&next, trans->to);
-                }
-            }
-        }
-        if (next.count == 0)
-        {
-            free_state_set(&current);
-            free_state_set(&next);
-            return false;
-        }
-        state_set tmp = current;
-        current = next;
-        next = tmp;
-        ptr++;
-    }
-    next.count = 0;
-    for (size_t i = 0; i < current.count; ++i)
-        epsilon_closure(&next, current.states[i]);
-    bool accepted = false;
-    for (size_t i = 0; i < next.count; i++)
-    {
-        if (next.states[i]->is_accept)
-        {
-            accepted = true;
-            break;
-        }
-    }
-    // printf("End of input. Accepting? %s\n", accepted ? "YES" : "NO");
-    free_state_set(&current);
-    free_state_set(&next);
-    return accepted;
+		for (size_t i = 0; i < current.count; i++)
+		{
+			t_nfa_state *state = current.states[i];
+			for (size_t t = 0; t < state->transition_count; t++)
+			{
+				t_nfa_transition *trans = state->transitions[t];
+				if (trans->symbol == *ptr)
+				{
+					epsilon_closure(&next, trans->to);
+				}
+			}
+		}
+		if (next.count == 0)
+		{
+			free_state_set(&current);
+			free_state_set(&next);
+			return -1;
+		}
+		state_set tmp = current;
+		current = next;
+		next = tmp;
+		ptr++;
+	}
+	next.count = 0;
+	for (size_t i = 0; i < current.count; ++i)
+		epsilon_closure(&next, current.states[i]);
+
+	int found_rule = -1;
+	for (size_t i = 0; i < next.count; i++)
+	{
+		if (next.states[i]->is_accept)
+		{
+			int rule = next.states[i]->rule_index;
+			if (found_rule == -1 || rule < found_rule)
+				found_rule = rule;
+		}
+	}
+	free_state_set(&current);
+	free_state_set(&next);
+	return found_rule;
+}
+
+bool    test_nfa(t_nfa_state *start_state, const char *input)
+{
+	return test_nfa_rule_index(start_state, input) != -1;
+}
+
+void    run_nfa_test_suite(
+	t_nfa_state *start_state,
+	const t_nfa_test *tests,
+	size_t n_tests,
+	const char *test_suite_name
+) {
+	const char *CHECK = "✅";
+	const char *CROSS = "❌";
+	const char *GREEN = "\033[32m";
+	const char *RED = "\033[31m";
+	const char *RESET = "\033[0m";
+
+	printf("\n=== Test suite: %s ===\n", test_suite_name);
+	for (size_t i = 0; i < n_tests; ++i) {
+		bool result = test_nfa(start_state, tests[i].input);
+		bool ok = (result == tests[i].expected);
+		printf("Test '%s': %s %s%s%s\n",
+			tests[i].input,
+			result ? "ACCEPTED" : "REJECTED",
+			ok ? GREEN : RED,
+			ok ? CHECK : CROSS,
+			RESET
+		);
+	}
+}
+
+void    run_test_suites(t_lex *lex)
+{
+	t_nfa_test tests_a_plus[] = {
+		{"a", true}, {"aa", true}, {"aaa", true}, {"ab", false}, {"b", false},
+	};
+	size_t n_tests_a_plus = sizeof(tests_a_plus) / sizeof(*tests_a_plus);
+
+	t_nfa_test tests_a_plus_b[] = {
+		{"ab", true}, {"aab", true}, {"aaab", true}, {"a", false}, {"b", false}, {"aa", false},
+	};
+	size_t n_tests_a_plus_b = sizeof(tests_a_plus_b) / sizeof(*tests_a_plus_b);
+
+	run_nfa_test_suite(lex->all_rules_frags[0]->start, tests_a_plus, n_tests_a_plus, "a+");
+	run_nfa_test_suite(lex->all_rules_frags[1]->start, tests_a_plus_b, n_tests_a_plus_b, "a+b");
 }
