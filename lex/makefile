@@ -33,6 +33,7 @@ RPN= srcs/rpn/rpn.c \
 NFA = srcs/nfa/nfa.c \
 		srcs/nfa/init_nfa.c \
 		srcs/nfa/build_automaton.c \
+		srcs/nfa/nfa_stack_utils.c \
 		srcs/nfa/nfa_utils.c \
 		srcs/nfa/test_nfa.c
 

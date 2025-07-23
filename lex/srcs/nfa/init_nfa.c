@@ -13,6 +13,8 @@ t_nfa_state	*init_nfa_state(int id, bool is_accept)
 	state->transitions = NULL;
 	state->transition_count = 0;
 	state->transition_capacity = 0;
+	state->rule_index = -1;
+	state->visited = false;
 	return state;
 }
 
@@ -27,17 +29,4 @@ t_nfa_fragment	*init_nfa_fragment(t_nfa_state *start, t_nfa_state *accept)
 	fragment->start = start;
 	fragment->accept = accept;
 	return fragment;
-}
-
-void	init_nfa(t_lex *lex)
-{
-    if (!lex->rpn_list)
-    {
-        fprintf(stderr, "Error: RPN list is not initialized\n");
-        exit(EXIT_FAILURE);
-    }
-
-    t_nfa_state *start_state = init_nfa_state(0, false);
-    t_nfa_state *accept_state = init_nfa_state(1, true);
-    lex->nfa_frag = init_nfa_fragment(start_state, accept_state);
 }
