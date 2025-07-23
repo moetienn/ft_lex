@@ -15,11 +15,14 @@ void free_frag_stack(t_frag_stack *stack)
         if (stack->fragments[i])
         {
             free(stack->fragments[i]);
+			stack->fragments[i] = NULL;
         }
     }
 
     free(stack->fragments);
+	stack->fragments = NULL;
     free(stack);
+	stack = NULL;
 }
 
 t_frag_stack *stack_create()
@@ -75,7 +78,7 @@ t_nfa_state	*create_new_state(void)
     state->transitions = NULL;
     state->transition_capacity = 0;
     state->is_accept = false;
-    state->rule_index = -1; // Initialize rule_index to a default value
-    state->visited = false; // Ensure 'visited' is initialized
+    state->rule_index = -1;
+    state->visited = false;
     return state;
 }

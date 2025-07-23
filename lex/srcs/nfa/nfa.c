@@ -28,7 +28,6 @@ static t_nfa_fragment	*process_rule(t_token *current_token)
 {
 	t_frag_stack	*frag_stack = stack_create();
 	// printf("[DEBUG] Created fragment stack %p\n", (void *)frag_stack);
-
 	while (current_token)
 	{
 		t_nfa_fragment *fragment = NULL;
@@ -62,31 +61,6 @@ static t_nfa_fragment	*process_rule(t_token *current_token)
 	return (final_fragment);
 }
 
-t_nfa_state	*deep_copy_nfa_state(t_nfa_state *state)
-{
-	t_nfa_state *new_state = malloc(sizeof(t_nfa_state));
-	if (!new_state)
-	{
-		perror("Failed to allocate memory for NFA state");
-		exit(EXIT_FAILURE);
-	}
-	new_state->id = state->id;
-	new_state->rule_index = state->rule_index;
-	new_state->is_accept = state->is_accept;
-	new_state->transitions = malloc(sizeof(t_nfa_transition*) * state->transition_capacity);
-	if (!new_state->transitions)
-	{
-		perror("Failed to allocate memory for NFA transitions");
-		free(new_state);
-		exit(EXIT_FAILURE);
-	}
-	memcpy(new_state->transitions, state->transitions, sizeof(t_nfa_transition*) * state->transition_count);
-	new_state->transition_count = state->transition_count;
-	new_state->transition_capacity = state->transition_capacity;
-	new_state->visited = state->visited;
-	return new_state;
-}
-
 static void	add_epsilon_transitions(t_nfa_state *super_start, t_nfa_fragment **rule_frags, size_t rule_count)
 {
 	for (size_t i = 0; i < rule_count; ++i)
@@ -100,6 +74,7 @@ static void	add_epsilon_transitions(t_nfa_state *super_start, t_nfa_fragment **r
 		epsilon->to = rule_frags[i]->start;
 		epsilon->symbol = '\0';
 		printf("[add_epsilon_transitions] Adding epsilon transition from super_start %p to rule_frags[%zu]->start %p\n", (void *)super_start, i, (void *)rule_frags[i]->start);
+		printf("[DEBUG] Allocated epsilon transition %p from super_start %p to rule_frags[%zu]->start %p\n", (void *)epsilon, (void *)super_start, i, (void *)rule_frags[i]->start);
 		add_transition(super_start, epsilon);
 	}
 }
@@ -119,7 +94,11 @@ void	build_nfa_from_rpn(t_lex *lex)
 	t_nfa_state *super_start = create_new_state();
 	add_epsilon_transitions(super_start, rule_frags, rule_count);
 	lex->super_start = super_start;
-	lex->all_rules_frags = rule_frags;
+	for (size_t i = 0; i < rule_count; i++)
+	{
+		free(rule_frags[i]);
+	}
+	free(rule_frags);
 }
 
 void	build_nfa(t_lex *lex)
@@ -129,9 +108,7 @@ void	build_nfa(t_lex *lex)
     tokenize_patterns(lex);
     add_concat_tokens(lex);
     rpn(lex);
-	// from here leaks occur
     build_nfa_from_rpn(lex);
     run_test_suites(lex);
-	free_all_rules_frags(lex->all_rules_frags, lex->rules_list.count);
-	free_nfa_state_recursive(lex->super_start);
+	free_nfa_state_iterative(lex->super_start);
 }
