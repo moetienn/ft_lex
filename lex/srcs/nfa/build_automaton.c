@@ -75,52 +75,78 @@ void	process_token_plus(t_frag_stack *frag_stack)
     fragment = NULL;
 }
 
+static t_nfa_transition *create_transition(t_nfa_state *to, char symbol)
+{
+    t_nfa_transition *transition = malloc(sizeof(t_nfa_transition));
+    if (!transition)
+    {
+        perror("Failed to allocate memory for NFA transition");
+        exit(EXIT_FAILURE);
+    }
+    transition->to = to;
+    transition->symbol = symbol;
+    return transition;
+}
+
+static void add_loop_transition(t_nfa_state *accept, t_nfa_state *start)
+{
+    t_nfa_transition *loop = create_transition(start, '\0');
+    add_transition(accept, loop);
+}
+
+static void add_exit_transition(t_nfa_state *accept, t_nfa_state *new_accept)
+{
+    t_nfa_transition *exit_tr = create_transition(new_accept, '\0');
+    add_transition(accept, exit_tr);
+}
+
+static void add_enter_transition(t_nfa_state *new_start, t_nfa_state *start)
+{
+    t_nfa_transition *enter = create_transition(start, '\0');
+    add_transition(new_start, enter);
+}
+
+static void add_empty_transition(t_nfa_state *new_start, t_nfa_state *new_accept)
+{
+    t_nfa_transition *empty = create_transition(new_accept, '\0');
+    add_transition(new_start, empty);
+}
+
+void	process_token_alternation(t_frag_stack *frag_stack)
+{
+    t_nfa_fragment *fragment_b = pop_stack_frag(frag_stack);
+    t_nfa_fragment *fragment_a = pop_stack_frag(frag_stack);
+
+    t_nfa_state *new_start = init_nfa_state(-1, false);
+    t_nfa_state *new_accept = init_nfa_state(-1, false);
+    add_enter_transition(new_start, fragment_a->start);
+    add_enter_transition(new_start, fragment_b->start);
+    add_exit_transition(fragment_a->accept, new_accept);
+    add_exit_transition(fragment_b->accept, new_accept);
+    t_nfa_fragment *alt_fragment = init_nfa_fragment(new_start, new_accept);
+    push_stack_frag(frag_stack, alt_fragment);
+    free(fragment_a);
+    free(fragment_b);
+}
+
 void process_token_kleene_star(t_frag_stack *frag_stack)
 {
     t_nfa_fragment *fragment = pop_stack_frag(frag_stack);
     t_nfa_state *new_start = init_nfa_state(-1, false);
     t_nfa_state *new_accept = init_nfa_state(-1, false);
-    t_nfa_transition *loop = malloc(sizeof(t_nfa_transition));
-    if (!loop)
-    {
-        perror("Failed to allocate memory for NFA transition");
-        exit(EXIT_FAILURE);
-    }
-    loop->to = fragment->start;
-    loop->symbol = '\0';
-    add_transition(fragment->accept, loop);
-    t_nfa_transition *exit_tr = malloc(sizeof(t_nfa_transition));
-    if (!exit_tr)
-    {
-        perror("Failed to allocate memory for NFA transition");
-        exit(EXIT_FAILURE);
-    }
-    exit_tr->to = new_accept;
-    exit_tr->symbol = '\0';
-    add_transition(fragment->accept, exit_tr);
-    t_nfa_transition *enter = malloc(sizeof(t_nfa_transition));
-    if (!enter)
-    {
-        perror("Failed to allocate memory for NFA transition");
-        exit(EXIT_FAILURE);
-    }
-    enter->to = fragment->start;
-    enter->symbol = '\0';
-    add_transition(new_start, enter);
-    t_nfa_transition *empty = malloc(sizeof(t_nfa_transition));
-    if (!empty)
-    {
-        perror("Failed to allocate memory for NFA transition");
-        exit(EXIT_FAILURE);
-    }
-    empty->to = new_accept;
-    empty->symbol = '\0';
-    add_transition(new_start, empty);
+
+    add_loop_transition(fragment->accept, fragment->start);
+    add_exit_transition(fragment->accept, new_accept);
+    add_enter_transition(new_start, fragment->start);
+    add_empty_transition(new_start, new_accept);
+
     t_nfa_fragment *star_fragment = init_nfa_fragment(new_start, new_accept);
     push_stack_frag(frag_stack, star_fragment);
     free(fragment);
     fragment = NULL;
 }
+
+
 
 void	process_token_concat(t_frag_stack *frag_stack)
 {
