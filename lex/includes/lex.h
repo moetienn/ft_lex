@@ -31,7 +31,6 @@ typedef struct s_lex
 	// RPN
 	t_token			**rpn_list; // linked list of tokens in RPN
 	// NFA
-	t_nfa_fragment **all_rules_frags;
 	t_nfa_state		*super_start; // start state of the NFA
 }   t_lex;
 

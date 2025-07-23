@@ -3,6 +3,7 @@
 t_nfa_state	*init_nfa_state(int id, bool is_accept)
 {
 	t_nfa_state *state = malloc(sizeof(t_nfa_state));
+	printf("[DEBUG] Initializing NFA state %p\n", (void *)state);
 	if (!state)
 	{
 		perror("Failed to allocate memory for NFA state");

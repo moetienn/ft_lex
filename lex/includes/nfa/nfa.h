@@ -71,6 +71,17 @@ typedef struct s_frag_stack
 	size_t			capacity;
 }	t_frag_stack;
 
+typedef struct {
+    t_nfa_state **items;
+    size_t size;
+    size_t capacity;
+} PtrStack;
+
+bool	stack_contains(PtrStack *stack, t_nfa_state *state);
+void	stack_push(PtrStack *stack, t_nfa_state *state);
+t_nfa_state	*stack_pop(PtrStack *stack);
+void	free_nfa_state_iterative(t_nfa_state *start);
+
 // utils
 void			add_next_token(t_token **current, t_token_type type, const char *value);
 void			initialize_first_token(t_token **token_list, t_token **current, t_token_type type);

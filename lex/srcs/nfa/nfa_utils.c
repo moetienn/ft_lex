@@ -1,47 +1,71 @@
 #include "../../includes/lex.h"
+#include <stdint.h>
 
-void	free_all_rules_frags(t_nfa_fragment **rule_frags, size_t rule_count)
+t_nfa_state *stack_pop(PtrStack *stack)
 {
-	if (!rule_frags)
-		return;
-	for (size_t i = 0; i < rule_count; i++)
-	{
-		if (!rule_frags[i])
-			continue;
-		if (rule_frags[i])
-			free(rule_frags[i]);
-	}
-	if (rule_frags)
-	{
-		free(rule_frags);
-		rule_frags = NULL;
-	}
+	if (!stack || stack->size == 0)
+		return NULL;
+
+	t_nfa_state *state = stack->items[--stack->size];
+	stack->items[stack->size] = NULL;
+	return state;
 }
 
-void	free_nfa_state_recursive(t_nfa_state *state)
+void	stack_push(PtrStack *stack, t_nfa_state *state)
 {
-    if (state->visited == true)
-    {
-        printf("[VISITED] state %p already visited, skipping\n", (void *)state);
-        return;
-    }
-    state->visited = true;
-	if (state->visited == true)
-		printf("[IS VISITED] visiting state %p\n", (void *)state);
+	if (!stack || !state)
+		return;
 
-    for (size_t i = 0; i < state->transition_count; i++)
-    {
-        t_nfa_transition *transition = state->transitions[i];
-        if (transition->to && !transition->to->visited)
-        {
-			printf("[GOING IN RECURSIVE] recursively freeing state %p\n", (void *)transition->to);
-            free_nfa_state_recursive(transition->to);
+	if (stack->size >= stack->capacity)
+	{
+		size_t new_capacity = stack->capacity == 0 ? 1 : stack->capacity * 2;
+		t_nfa_state **new_items = realloc(stack->items, new_capacity * sizeof(t_nfa_state *));
+		if (!new_items)
+		{
+			perror("Failed to reallocate memory for stack");
+			exit(EXIT_FAILURE);
+		}
+		stack->items = new_items;
+		stack->capacity = new_capacity;
+	}
+	stack->items[stack->size++] = state;
+}
+
+bool	stack_contains(PtrStack *stack, t_nfa_state *state)
+{
+	if (!stack || !state || stack->size == 0)
+		return false;
+
+	for (size_t i = 0; i < stack->size; i++)
+	{
+		if (stack->items[i] == state)
+			return true;
+	}
+	return false;
+}
+
+void free_nfa_state_iterative(t_nfa_state *start)
+{
+    PtrStack to_visit = { NULL, 0, 0 };
+    PtrStack visited = { NULL, 0, 0 };
+
+    stack_push(&to_visit, start);
+
+    while (to_visit.size > 0) {
+        t_nfa_state *state = stack_pop(&to_visit);
+
+        if (!state || stack_contains(&visited, state))
+            continue;
+        stack_push(&visited, state);
+
+        for (size_t i = 0; i < state->transition_count; i++) {
+            if (state->transitions[i]->to)
+                stack_push(&to_visit, state->transitions[i]->to);
+            free(state->transitions[i]);
         }
-		printf("[free_nfa_state_recursive in LOOP] freeing state->transition[i] %p\n", (void *)state->transitions[i]);
-        free(transition);
+        free(state->transitions);
+        free(state);
     }
-	printf("[free_nfa_state_recursive] freeing state->transitions %p\n", (void *)state->transitions);
-    free(state->transitions);
-	printf("[free_nfa_state_recursive] freeing state %p\n", (void *)state);
-    free(state);
+	free(visited.items);
+	free(to_visit.items);
 }

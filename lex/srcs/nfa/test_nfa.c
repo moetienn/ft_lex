@@ -140,11 +140,11 @@ void    run_nfa_test_suite(
 
 void    run_test_suites(t_lex *lex)
 {
-	// t_nfa_test tests_a_plus[] = {
-	// 	{"a", true}, {"aa", true}, {"aaa", true}, {"ab", false}, {"b", false},
-	// };
-	// size_t n_tests_a_plus = sizeof(tests_a_plus) / sizeof(*tests_a_plus);
-	// run_nfa_test_suite(lex->super_start, tests_a_plus, n_tests_a_plus, "a+");
+	t_nfa_test tests_a_plus[] = {
+		{"a", true}, {"aa", true}, {"aaa", true}, {"ab", false}, {"b", false},
+	};
+	size_t n_tests_a_plus = sizeof(tests_a_plus) / sizeof(*tests_a_plus);
+	run_nfa_test_suite(lex->super_start, tests_a_plus, n_tests_a_plus, "a+");
 
 	// t_nfa_test tests_a_plus_b[] = {
 	// 	{"ab", true}, {"aab", true}, {"aaab", true}, {"a", false}, {"b", false}, {"aa", false},
@@ -158,9 +158,9 @@ void    run_test_suites(t_lex *lex)
 	// size_t n_tests_a_star = sizeof(tests_a_star) / sizeof(*tests_a_star);
 	// run_nfa_test_suite(lex->super_start, tests_a_star, n_tests_a_star, "a*");
 
-	t_nfa_test tests_a_star_b[] = {
-		{"", false}, {"a", false}, {"aa", false}, {"aaa", false}, {"b", true}, {"ab", true}, {"aab", true}, {"aaab", true}, {"bba", false},
-	};
-	size_t n_tests_a_star_b = sizeof(tests_a_star_b) / sizeof(*tests_a_star_b);
-	run_nfa_test_suite(lex->super_start, tests_a_star_b, n_tests_a_star_b, "a*b");
+	// t_nfa_test tests_a_star_b[] = {
+	// 	{"", false}, {"a", false}, {"aa", false}, {"aaa", false}, {"b", true}, {"ab", true}, {"aab", true}, {"aaab", true}, {"bba", false},
+	// };
+	// size_t n_tests_a_star_b = sizeof(tests_a_star_b) / sizeof(*tests_a_star_b);
+	// run_nfa_test_suite(lex->super_start, tests_a_star_b, n_tests_a_star_b, "a*b");
 }
