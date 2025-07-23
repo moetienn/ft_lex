@@ -90,8 +90,6 @@ void			free_token_list(t_token **token_list, size_t count);
 void			init_token_list(t_token ***token_list, size_t count);
 bool			is_empty_stack_frag(t_frag_stack *stack);
 void			free_frag_stack(t_frag_stack *stack);
-void			free_all_rules_frags(t_nfa_fragment **rule_frags, size_t rule_count);
-void			free_nfa_state_recursive(t_nfa_state *state);
 
 
 #endif

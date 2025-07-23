@@ -23,7 +23,6 @@ static t_nfa_fragment	**initialize_rule_fragments(size_t rule_count)
 	return (rule_frags);
 }
 
-
 static t_nfa_fragment	*process_rule(t_token *current_token)
 {
 	t_frag_stack	*frag_stack = stack_create();
@@ -39,6 +38,8 @@ static t_nfa_fragment	*process_rule(t_token *current_token)
 			process_token_plus(frag_stack);
 		else if (current_token->type == TOKEN_CONCAT)
 			process_token_concat(frag_stack);
+		else if (current_token->type == TOKEN_ALTERNATION)
+			process_token_alternation(frag_stack);
 		if (fragment)
 			push_stack_frag(frag_stack, fragment);
 		current_token = current_token->next;

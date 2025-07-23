@@ -140,11 +140,11 @@ void    run_nfa_test_suite(
 
 void    run_test_suites(t_lex *lex)
 {
-	t_nfa_test tests_a_plus[] = {
-		{"a", true}, {"aa", true}, {"aaa", true}, {"ab", false}, {"b", false},
-	};
-	size_t n_tests_a_plus = sizeof(tests_a_plus) / sizeof(*tests_a_plus);
-	run_nfa_test_suite(lex->super_start, tests_a_plus, n_tests_a_plus, "a+");
+	// t_nfa_test tests_a_plus[] = {
+	// 	{"a", true}, {"aa", true}, {"aaa", true}, {"ab", false}, {"b", false},
+	// };
+	// size_t n_tests_a_plus = sizeof(tests_a_plus) / sizeof(*tests_a_plus);
+	// run_nfa_test_suite(lex->super_start, tests_a_plus, n_tests_a_plus, "a+");
 
 	// t_nfa_test tests_a_plus_b[] = {
 	// 	{"ab", true}, {"aab", true}, {"aaab", true}, {"a", false}, {"b", false}, {"aa", false},
@@ -163,4 +163,16 @@ void    run_test_suites(t_lex *lex)
 	// };
 	// size_t n_tests_a_star_b = sizeof(tests_a_star_b) / sizeof(*tests_a_star_b);
 	// run_nfa_test_suite(lex->super_start, tests_a_star_b, n_tests_a_star_b, "a*b");
+
+	t_nfa_test tests_a_alternation_b[] = {
+		{"a", true}, {"b", true}, {"aa", false}, {"aaa", false}, {"ab", false}, {"aab", false}, {"aaab", false}, {"bba", false},
+	};
+	size_t n_tests_a_alternation_b = sizeof(tests_a_alternation_b) / sizeof(*tests_a_alternation_b);
+	run_nfa_test_suite(lex->super_start, tests_a_alternation_b, n_tests_a_alternation_b, "a|b");
+
+	t_nfa_test tests_a_alternation_b_alternation_c[] = {
+		{"a", true}, {"b", true}, {"c", true}, {"aa", false}, {"aaa", false}, {"ab", false}, {"aab", false}, {"aaab", false}, {"bba", false}, {"ac", false}, {"bc", false}, {"abc", false}, {"aab", false}, {"bba", false}, {"cc", false}, {"cba", false}, {"cab", false}, {"caa", false}, {"bbc", false}, {"cbb", false}, {"ccc", false}, {"aabcc", false}, {"bbaac", false}, {"ccab", false}, {"abcabc", false},
+	};
+	size_t n_tests_a_alternation_b_alternation_c = sizeof(tests_a_alternation_b_alternation_c) / sizeof(*tests_a_alternation_b_alternation_c);
+	run_nfa_test_suite(lex->super_start, tests_a_alternation_b_alternation_c, n_tests_a_alternation_b_alternation_c, "a|b|c");
 }
