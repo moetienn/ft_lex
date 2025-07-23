@@ -46,10 +46,10 @@ typedef struct s_nfa_state
 	int				id;
 	int				rule_index;
 	bool			is_accept;
-	t_nfa_transition	**transitions; // Array of pointers to transition structs
+	t_nfa_transition	**transitions;
 	size_t			transition_count;
-	size_t			transition_capacity; // Capacity of the transitions array
-	
+	size_t			transition_capacity;
+	bool			visited;
 }	t_nfa_state;
 
 typedef struct s_nfa_transition
@@ -77,5 +77,10 @@ void			initialize_first_token(t_token **token_list, t_token **current, t_token_t
 t_token_type	get_token_type(char c);
 void			free_token_list(t_token **token_list, size_t count);
 void			init_token_list(t_token ***token_list, size_t count);
+bool			is_empty_stack_frag(t_frag_stack *stack);
+void			free_frag_stack(t_frag_stack *stack);
+void			free_all_rules_frags(t_nfa_fragment **rule_frags, size_t rule_count);
+void			free_nfa_state_recursive(t_nfa_state *state);
+
 
 #endif
