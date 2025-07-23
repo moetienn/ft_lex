@@ -7,7 +7,7 @@ DIGIT   [0-9]
 %%
 
 
-b*				{ printf("MATCH a: %s\n", yytext); }
+a*				{ printf("MATCH a: %s\n", yytext); }
 
 %%
 
