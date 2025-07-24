@@ -42,13 +42,12 @@ static t_nfa_fragment	*process_rule(t_token *current_token)
 			process_token_concat(frag_stack);
 		else if (current_token->type == TOKEN_ALTERNATION)
 			process_token_alternation(frag_stack);
-		// TO DO
 		else if (current_token->type == TOKEN_OPTIONAL)
 			process_token_optional(frag_stack);
-		// else if (current_token->type == TOKEN_CLASS)
-		// 	process_token_class(frag_stack);
-		// else if (current_token->type == TOKEN_QUANTIFIER)
-		// 	process_token_quantifier(frag_stack);
+		else if (current_token->type == TOKEN_CLASS)
+			fragment = process_token_class(current_token);
+		else if (current_token->type == TOKEN_QUANTIFIER)
+			process_token_quantifier(frag_stack, current_token);
 		if (fragment)
 			push_stack_frag(frag_stack, fragment);
 		current_token = current_token->next;

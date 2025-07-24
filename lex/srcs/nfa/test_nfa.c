@@ -197,12 +197,56 @@ void    run_test_suites(t_lex *lex)
 	// size_t n_tests_a_b_optional_c_optional = sizeof(tests_a_b_optional_c_optional) / sizeof(*tests_a_b_optional_c_optional);
 	// run_nfa_test_suite(lex->super_start, tests_a_b_optional_c_optional, n_tests_a_b_optional_c_optional, "ab?c?");
 
-	t_nfa_test tests_a_escape_t_b[] = {
-    {"a\tb", true}, {"ab", false}, {"a b", false}, {"a\nb", false}, {"a\r\nb", false},
-    {"a\\b", false}, {"aa", false}, {"bb", false}, {"aaa", false}, {"abab", false},
-    {"aab", false}, {"a'b", false}, {"a\"b", false}, {"a\fb", false}, {"a\bb", false}, };
+	// t_nfa_test tests_a_escape_t_b[] = {
+    // {"a\tb", true}, {"ab", false}, {"a b", false}, {"a\nb", false}, {"a\r\nb", false},
+    // {"a\\b", false}, {"aa", false}, {"bb", false}, {"aaa", false}, {"abab", false},
+    // {"aab", false}, {"a'b", false}, {"a\"b", false}, {"a\fb", false}, {"a\bb", false}, };
 
-	size_t n_tests_a_escape_t_b = sizeof(tests_a_escape_t_b) / sizeof(*tests_a_escape_t_b);
-	run_nfa_test_suite(lex->super_start, tests_a_escape_t_b, n_tests_a_escape_t_b, "a\tb");
+	// size_t n_tests_a_escape_t_b = sizeof(tests_a_escape_t_b) / sizeof(*tests_a_escape_t_b);
+	// run_nfa_test_suite(lex->super_start, tests_a_escape_t_b, n_tests_a_escape_t_b, "a\tb");
 
+	// t_nfa_test tests_digit_plus[] = {
+    // {"", false}, {"1", true}, {"9", true}, {"123", true}, {"000", true},
+    // {"9876543210", true}, {"a", false}, {"1a", false}, {"a1", false},
+    // {"12b34", false}, {"1 2", false}, {" 123", false}, {"123 ", false},
+    // {"12.3", false}, {"-123", false}
+	// };
+	// size_t n_tests_digit_plus = sizeof(tests_digit_plus) / sizeof(*tests_digit_plus);
+	// run_nfa_test_suite(lex->super_start, tests_digit_plus, n_tests_digit_plus, "digit+");
+
+	// t_nfa_test tests_letter_star[] = {
+    // {"", true}, {"a", true}, {"z", true}, {"abc", true}, {"azbyc", true},
+    // {"aaaaa", true}, {"A", false}, {"Abc", false}, {"abcABC", false},
+    // {"1", false}, {"a1b2c3", false}, {" ", false}, {"a b", false},
+    // {"-", false}, {"az-", false}
+	// };
+	// size_t n_tests_letter_star = sizeof(tests_letter_star) / sizeof(*tests_letter_star);
+	// run_nfa_test_suite(lex->super_start, tests_letter_star, n_tests_letter_star, "letter*");
+
+	// t_nfa_test tests_id[] = {
+    // {"a", true}, {"A", true}, {"_", true}, {"abc", true}, {"ABC", true},
+    // {"a123", true}, {"_var123", true}, {"Abc_def", true}, {"a1b2c3", true},
+    // {"variable_", true}, {"variable123", true}, {"_123", true}, {"a_b_c", true},
+    // {"", false}, {"1abc", false}, {"9", false}, {"1", false}, {"123var", false},
+    // {"-abc", false}, {" abc", false}, {"var-name", false}, {"a.b", false},
+    // {"a b", false}, {"var$", false}
+	// };
+	// size_t n_tests_id = sizeof(tests_id) / sizeof(*tests_id);
+	// run_nfa_test_suite(lex->super_start, tests_id, n_tests_id, "ID");
+
+	t_nfa_test tests_a3[] = {
+    {"", false},       // chaîne vide
+    {"a", false},      // un seul 'a'
+    {"aa", false},     // deux 'a'
+    {"aaa", true},     // trois 'a' -> accepté
+    {"aaaa", false},   // quatre 'a'
+    {"aaaaa", false},  // cinq 'a'
+    {"b", false},      // autre caractère
+    {"baaa", false},   // commence par autre
+    {"aaab", false},   // termine par autre
+    {"aa aa", false},  // espace
+    {"a a a", false},  // 'a' séparés
+	};
+	size_t n_tests_a3 = sizeof(tests_a3) / sizeof(*tests_a3);
+	run_nfa_test_suite(lex->super_start, tests_a3, n_tests_a3, "a{3}");
 }

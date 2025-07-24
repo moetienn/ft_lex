@@ -30,7 +30,7 @@ t_nfa_fragment	*process_token_escape(t_token *current_token)
 	transition->symbol = decode_escape(current_token->value[1]);
 	add_transition(start, transition);
 	t_nfa_fragment *fragment = init_nfa_fragment(start, accept);
-	return fragment;
+	return (fragment);
 }
 
 t_nfa_fragment	*process_token_char(t_token *current_token)
@@ -47,5 +47,5 @@ t_nfa_fragment	*process_token_char(t_token *current_token)
 	transition->symbol = current_token->value[0];
 	add_transition(start, transition);
 	t_nfa_fragment *fragment = init_nfa_fragment(start, accept);
-	return fragment;
+	return (fragment);
 }

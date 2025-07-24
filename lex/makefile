@@ -37,6 +37,8 @@ NFA = srcs/nfa/nfa.c \
 		srcs/nfa/build_automaton/optional_concat_alter_token.c \
 		srcs/nfa/build_automaton/kleen_plus_token.c \
 		srcs/nfa/build_automaton/char_escape_token.c \
+		srcs/nfa/build_automaton/class_token.c \
+		srcs/nfa/build_automaton/quantifier_token.c \
 		srcs/nfa/build_automaton/transition_helpers.c \
 		srcs/nfa/test_nfa.c
 
