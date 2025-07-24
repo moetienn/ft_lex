@@ -71,16 +71,6 @@ void    add_concat_tokens(t_lex *lex);
 t_nfa_state		*init_nfa_state(int id, bool is_accept);
 t_nfa_fragment	*init_nfa_fragment(t_nfa_state *start, t_nfa_state *accept);
 
-// process nfa token
-void	add_transition(t_nfa_state *state, t_nfa_transition *transition);
-void	process_token_plus(t_frag_stack *frag_stack);
-void	process_token_concat(t_frag_stack *frag_stack);
-void	process_token_kleene_star(t_frag_stack *frag_stack);
-t_nfa_fragment	*process_token_char(t_token *current_token);
-void	process_token_alternation(t_frag_stack *frag_stack);
-void	process_token_optional(t_frag_stack *frag_stack);
-t_nfa_fragment	*process_token_escape(t_token *current_token);
-
 // nfa utils
 t_nfa_state	*create_new_state(void);
 t_frag_stack	*stack_create(void);
