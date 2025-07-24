@@ -170,6 +170,7 @@ void	optional_token(t_token *current, t_lex *lex, size_t i, size_t *j)
 			exit(EXIT_FAILURE);
 		}
 	}
+	(*j)--;
 }
 
 void	left_paren_token(t_token *current, t_lex *lex, size_t i, size_t *j)

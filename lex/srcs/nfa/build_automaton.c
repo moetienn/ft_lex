@@ -1,5 +1,38 @@
 #include "../../includes/lex.h"
 
+char decode_escape(char c)
+{
+    switch (c)
+    {
+        case 'n': return '\n';
+        case 't': return '\t';
+        case 'r': return '\r';
+        case 'b': return '\b';
+        case 'f': return '\f';
+        case '\\': return '\\';
+        case '\'': return '\'';
+        case '"': return '"';
+        default: return c;
+    }
+}
+
+t_nfa_fragment	*process_token_escape(t_token *current_token)
+{
+    t_nfa_state *start = init_nfa_state(-1, false);
+    t_nfa_state *accept = init_nfa_state(-1, false);
+    t_nfa_transition *transition = malloc(sizeof(t_nfa_transition));
+    if (!transition)
+    {
+        perror("Failed to allocate memory for NFA transition");
+        exit(EXIT_FAILURE);
+    }
+    transition->to = accept;
+    transition->symbol = decode_escape(current_token->value[1]);
+    add_transition(start, transition);
+    t_nfa_fragment *fragment = init_nfa_fragment(start, accept);
+    return fragment;
+}
+
 void	add_transition(t_nfa_state *state, t_nfa_transition *transition)
 {
 	if (!state)
@@ -112,6 +145,22 @@ static void add_empty_transition(t_nfa_state *new_start, t_nfa_state *new_accept
     add_transition(new_start, empty);
 }
 
+void    process_token_optional(t_frag_stack *frag_stack)
+{
+    t_nfa_fragment *fragment = pop_stack_frag(frag_stack);
+    t_nfa_state *new_start = init_nfa_state(-1, false);
+    t_nfa_state *new_accept = init_nfa_state(-1, false);
+
+
+    add_enter_transition(new_start, fragment->start);
+    add_exit_transition(fragment->accept, new_accept);
+    add_empty_transition(new_start, new_accept);
+
+    t_nfa_fragment *optional_fragment = init_nfa_fragment(new_start, new_accept);
+    push_stack_frag(frag_stack, optional_fragment);
+    free(fragment);
+}
+
 void	process_token_alternation(t_frag_stack *frag_stack)
 {
     t_nfa_fragment *fragment_b = pop_stack_frag(frag_stack);
@@ -146,12 +195,12 @@ void process_token_kleene_star(t_frag_stack *frag_stack)
     fragment = NULL;
 }
 
-
-
 void	process_token_concat(t_frag_stack *frag_stack)
 {
     t_nfa_fragment *right = pop_stack_frag(frag_stack);
     t_nfa_fragment *left = pop_stack_frag(frag_stack);
+
+
     t_nfa_transition *epsilon = malloc(sizeof(t_nfa_transition));
     if (!epsilon)
     {
@@ -161,9 +210,11 @@ void	process_token_concat(t_frag_stack *frag_stack)
     epsilon->to = right->start;
     epsilon->symbol = '\0';
     add_transition(left->accept, epsilon);
+
     left->accept->is_accept = false;
     t_nfa_fragment *concat_fragment = init_nfa_fragment(left->start, right->accept);
     push_stack_frag(frag_stack, concat_fragment);
+
     free(left);
     free(right);
 }
