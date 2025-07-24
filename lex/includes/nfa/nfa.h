@@ -91,5 +91,22 @@ void			init_token_list(t_token ***token_list, size_t count);
 bool			is_empty_stack_frag(t_frag_stack *stack);
 void			free_frag_stack(t_frag_stack *stack);
 
+// transition helper
+void	add_transition(t_nfa_state *state, t_nfa_transition *transition);
+t_nfa_transition *create_transition(t_nfa_state *to, char symbol);
+void	add_loop_transition(t_nfa_state *accept, t_nfa_state *start);
+void	add_exit_transition(t_nfa_state *accept, t_nfa_state *new_accept);
+void	add_enter_transition(t_nfa_state *new_start, t_nfa_state *start);
+void	add_empty_transition(t_nfa_state *new_start, t_nfa_state *new_accept);
+
+// process nfa token
+void	add_transition(t_nfa_state *state, t_nfa_transition *transition);
+void	process_token_plus(t_frag_stack *frag_stack);
+void	process_token_concat(t_frag_stack *frag_stack);
+void	process_token_kleene_star(t_frag_stack *frag_stack);
+t_nfa_fragment	*process_token_char(t_token *current_token);
+void	process_token_alternation(t_frag_stack *frag_stack);
+void	process_token_optional(t_frag_stack *frag_stack);
+t_nfa_fragment	*process_token_escape(t_token *current_token);
 
 #endif

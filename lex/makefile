@@ -32,9 +32,12 @@ RPN= srcs/rpn/rpn.c \
 
 NFA = srcs/nfa/nfa.c \
 		srcs/nfa/init_nfa.c \
-		srcs/nfa/build_automaton.c \
 		srcs/nfa/nfa_stack_utils.c \
 		srcs/nfa/nfa_utils.c \
+		srcs/nfa/build_automaton/optional_concat_alter_token.c \
+		srcs/nfa/build_automaton/kleen_plus_token.c \
+		srcs/nfa/build_automaton/char_escape_token.c \
+		srcs/nfa/build_automaton/transition_helpers.c \
 		srcs/nfa/test_nfa.c
 
 OBJDIR= obj
