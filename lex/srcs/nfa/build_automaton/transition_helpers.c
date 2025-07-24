@@ -40,7 +40,7 @@ t_nfa_transition *create_transition(t_nfa_state *to, char symbol)
 	}
 	transition->to = to;
 	transition->symbol = symbol;
-	return transition;
+	return (transition);
 }
 
 void add_loop_transition(t_nfa_state *accept, t_nfa_state *start)

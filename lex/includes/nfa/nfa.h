@@ -75,7 +75,7 @@ typedef struct {
     t_nfa_state **items;
     size_t size;
     size_t capacity;
-} PtrStack;
+}	PtrStack;
 
 bool	stack_contains(PtrStack *stack, t_nfa_state *state);
 void	stack_push(PtrStack *stack, t_nfa_state *state);
@@ -104,9 +104,11 @@ void	add_transition(t_nfa_state *state, t_nfa_transition *transition);
 void	process_token_plus(t_frag_stack *frag_stack);
 void	process_token_concat(t_frag_stack *frag_stack);
 void	process_token_kleene_star(t_frag_stack *frag_stack);
-t_nfa_fragment	*process_token_char(t_token *current_token);
 void	process_token_alternation(t_frag_stack *frag_stack);
 void	process_token_optional(t_frag_stack *frag_stack);
+void	process_token_quantifier(t_frag_stack *frag_stack, t_token *current_token);
+t_nfa_fragment	*process_token_char(t_token *current_token);
 t_nfa_fragment	*process_token_escape(t_token *current_token);
+t_nfa_fragment	*process_token_class(t_token *current_token);
 
 #endif
