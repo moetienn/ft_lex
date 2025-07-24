@@ -19,9 +19,9 @@ typedef enum e_token_type
 	TOKEN_PLUS,            // +
 	TOKEN_OPTIONAL,        // ?
 	TOKEN_LPAREN,          // (
-		TOKEN_RPAREN,          // )
-		TOKEN_QUANTIFIER,      // {m} or {m,n}
-	}   t_token_type;
+	TOKEN_RPAREN,          // )
+	TOKEN_QUANTIFIER,      // {m} or {m,n}
+}   t_token_type;
 	
 typedef struct s_token
 {

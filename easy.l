@@ -6,7 +6,7 @@ DIGIT   [0-9]
 
 %%
 
-a|b|c				{ printf("MATCH a*b: %s\n", yytext); }
+a\tb				{ printf("MATCH a?: %s\n", yytext); }
 
 %%
 
