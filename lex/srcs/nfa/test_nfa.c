@@ -36,7 +36,7 @@ void    free_state_set(state_set *set)
 	set->count = set->capacity = 0;
 }
 
-void	epsilon_closure(state_set *set, t_nfa_state *state)
+void	test_epsilon_closure(state_set *set, t_nfa_state *state)
 {
 	add_state(set, state);
 	for (size_t i = 0; i < state->transition_count; i++)
@@ -49,7 +49,7 @@ void	epsilon_closure(state_set *set, t_nfa_state *state)
 				if (set->states[j] == t->to)
 					already = true;
 			if (!already)
-				epsilon_closure(set, t->to);
+				test_epsilon_closure(set, t->to);
 		}
 	}
 }
@@ -57,7 +57,7 @@ void	epsilon_closure(state_set *set, t_nfa_state *state)
 int test_nfa_rule_index(t_nfa_state *start_state, const char *input)
 {
 	state_set current = {0}, next = {0};
-	epsilon_closure(&current, start_state);
+	test_epsilon_closure(&current, start_state);
 
 	const char *ptr = input;
 
@@ -73,7 +73,7 @@ int test_nfa_rule_index(t_nfa_state *start_state, const char *input)
 				t_nfa_transition *trans = state->transitions[t];
 				if (trans->symbol == *ptr)
 				{
-					epsilon_closure(&next, trans->to);
+					test_epsilon_closure(&next, trans->to);
 				}
 			}
 		}
@@ -90,7 +90,7 @@ int test_nfa_rule_index(t_nfa_state *start_state, const char *input)
 	}
 	next.count = 0;
 	for (size_t i = 0; i < current.count; ++i)
-		epsilon_closure(&next, current.states[i]);
+		test_epsilon_closure(&next, current.states[i]);
 
 	int found_rule = -1;
 	for (size_t i = 0; i < next.count; i++)

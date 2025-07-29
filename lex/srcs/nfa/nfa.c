@@ -81,13 +81,13 @@ void	build_nfa_from_rpn(t_lex *lex)
 	validate_rpn_list(lex);
 	size_t rule_count = lex->rules_list.count;
 	t_nfa_fragment **rule_frags = initialize_rule_fragments(rule_count);
+	t_nfa_state *super_start = create_new_state();
 	for (size_t i = 0; i < rule_count; i++)
 	{
 		t_token *current_token = lex->rpn_list[i];
 		rule_frags[i] = process_rule(current_token);
 		rule_frags[i]->accept->rule_index = i;
 	}
-	t_nfa_state *super_start = create_new_state();
 	add_epsilon_transitions(super_start, rule_frags, rule_count);
 	lex->super_start = super_start;
 	for (size_t i = 0; i < rule_count; i++)

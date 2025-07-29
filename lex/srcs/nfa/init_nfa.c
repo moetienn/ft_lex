@@ -2,17 +2,14 @@
 
 t_nfa_state	*init_nfa_state(int id, bool is_accept)
 {
-	if (id < 0)
-	{
-		id = g_nfa_state_id++;
-	}
+	(void)id;
 	t_nfa_state *state = malloc(sizeof(t_nfa_state));
 	if (!state)
 	{
 		perror("Failed to allocate memory for NFA state");
 		exit(EXIT_FAILURE);
 	}
-	state->id = id;
+	state->id = g_nfa_state_id++;
 	printf("Initializing NFA state with ID: %d\n", state->id);
 	state->is_accept = is_accept;
 	state->transitions = NULL;

@@ -74,6 +74,7 @@ t_nfa_state	*create_new_state(void)
         perror("malloc failed");
         exit(EXIT_FAILURE);
     }
+	state->id = g_nfa_state_id++;
     state->transition_count = 0;
     state->transitions = NULL;
     state->transition_capacity = 0;
