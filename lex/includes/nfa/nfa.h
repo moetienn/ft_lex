@@ -39,6 +39,8 @@ typedef struct s_stack
 
 // NFA
 
+extern int g_nfa_state_id;
+
 typedef struct s_nfa_transition t_nfa_transition;
 
 typedef struct s_nfa_state

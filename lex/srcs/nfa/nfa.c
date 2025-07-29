@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+int g_nfa_state_id = 0;
+
 static void	validate_rpn_list(t_lex *lex)
 {
 	if (!lex->rpn_list)
