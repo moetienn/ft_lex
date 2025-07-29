@@ -5,6 +5,11 @@ void	init_worklist(t_worklist *wl)
 	wl->size = 0;
 	wl->capacity = 8;
 	wl->states = malloc(wl->capacity * sizeof(t_dfa_state *));
+	if (!wl->states)
+	{
+		fprintf(stderr, "Error: Failed to allocate memory for worklist states\n");
+		exit(EXIT_FAILURE);
+	}
 }
 
 void	worklist_push(t_worklist *wl, t_dfa_state *state)
