@@ -9,7 +9,6 @@ int	add_to_alphabet(char *alphabet, int *alphabet_size, char symbol)
     return 1;
 }
 
-// DFS pour visiter tous les états atteignables et collecter l'alphabet
 void	collect_alphabet_dfs(t_nfa_state *state, char *alphabet, int *alphabet_size, bool *visited, int max_states)
 {
     if (!state || visited[state->id])
