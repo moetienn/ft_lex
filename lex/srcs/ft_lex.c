@@ -35,5 +35,10 @@ void    ft_lex(const char *filename)
 	lex.user_code = strdup(parser.third_section);
 	free_parser(&parser);
 	build_nfa(&lex);
+	if (lex.super_start)
+		from_nfa_to_dfa(&lex);
+	else
+		fprintf(stderr, "Error: NFA not built correctly.\n");
+	free_nfa_state_iterative(lex.super_start);
 	free_lex(&lex);
 }
