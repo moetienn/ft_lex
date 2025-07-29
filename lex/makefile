@@ -42,6 +42,8 @@ NFA = srcs/nfa/nfa.c \
 		srcs/nfa/build_automaton/transition_helpers.c \
 		srcs/nfa/test_nfa.c
 
+DFA = srcs/dfa/dfa.c
+
 OBJDIR= obj
 OBJS= $(addprefix $(OBJDIR)/, $(SRCS:.c=.o))
 UTILSOBJS= $(addprefix $(OBJDIR)/, $(UTILSSRCS:.c=.o))
@@ -58,7 +60,8 @@ HDR= includes/lex.h \
 	 includes/parser.h \
 	 includes/declaration/macros.h \
 	 includes/declaration/first_section.h \
-	 includes/nfa/nfa.h
+	 includes/nfa/nfa.h \
+	 includes/dfa/dfa.h
 
 CFLAGS= -Wall -Wextra -Werror -g
 
@@ -68,8 +71,8 @@ $(OBJDIR)/%.o: %.c $(HDR)
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(NAME): $(OBJS) $(UTILSOBJS) $(PARSEROBJS) $(DECLARATION_OBJS) $(RULES_OBJS) $(NFA_OBJS) $(TOKEN_OBJS) $(RPN_OBJS)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(UTILSOBJS) $(PARSEROBJS) $(DECLARATION_OBJS) $(RULES_OBJS) $(NFA_OBJS) $(LDFLAGS) $(TOKEN_OBJS) $(RPN_OBJS)
+$(NAME): $(OBJS) $(UTILSOBJS) $(PARSEROBJS) $(DECLARATION_OBJS) $(RULES_OBJS) $(NFA_OBJS) $(TOKEN_OBJS) $(RPN_OBJS) $(DFA)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(UTILSOBJS) $(PARSEROBJS) $(DECLARATION_OBJS) $(RULES_OBJS) $(NFA_OBJS) $(LDFLAGS) $(TOKEN_OBJS) $(RPN_OBJS) $(DFA)
 
 clean:
 	rm -f $(OBJDIR)/*.o

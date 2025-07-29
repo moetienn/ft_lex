@@ -10,6 +10,7 @@
 #include "declaration/macros.h"
 #include "rules/rules.h"
 #include "nfa/nfa.h"
+#include "dfa/dfa.h"
 
 // ----------- TEST STRUCT -----------
 typedef struct {
@@ -77,6 +78,9 @@ t_frag_stack	*stack_create(void);
 t_nfa_fragment *pop_stack_frag(t_frag_stack *stack);
 void    push_stack_frag(t_frag_stack *stack, t_nfa_fragment *fragment);
 
+
+
+
 // TESTER DONT FORGET TO REMOVE
 bool	test_nfa(t_nfa_state *start_state, const char *input);
 void run_nfa_test_suite(
@@ -86,6 +90,14 @@ void run_nfa_test_suite(
     const char *test_suite_name
 );
 void    run_test_suites(t_lex *lex);
+
+
+// DFA
+
+void    from_nfa_to_dfa(t_lex *lex);
+
+
+
 // rpn
 void	rpn(t_lex *lex);
 // rpn utils

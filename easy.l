@@ -3,10 +3,12 @@
 %}
 
 DIGIT   [0-9]
+LETTER  [a-z]
 
 %%
 
-a\tb				{ printf("MATCH a?: %s\n", yytext); }
+{DIGIT}+        	{ printf("NUMBER: %s\n", yytext); }
+{LETTER}*			{ printf("FOUND %zu letter(s): \"%s\"\n", yyleng, yytext); }
 
 %%
 

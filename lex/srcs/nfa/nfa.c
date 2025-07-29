@@ -103,6 +103,5 @@ void	build_nfa(t_lex *lex)
     add_concat_tokens(lex);
     rpn(lex);
     build_nfa_from_rpn(lex);
-    run_test_suites(lex);
-	free_nfa_state_iterative(lex->super_start);
+    // run_test_suites(lex);
 }
