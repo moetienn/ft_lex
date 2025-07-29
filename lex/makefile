@@ -42,7 +42,9 @@ NFA = srcs/nfa/nfa.c \
 		srcs/nfa/build_automaton/transition_helpers.c \
 		srcs/nfa/test_nfa.c
 
-DFA = srcs/dfa/dfa.c
+DFA = srcs/dfa/dfa.c \
+		srcs/dfa/alphabet.c \
+		srcs/dfa/worklist.c
 
 OBJDIR= obj
 OBJS= $(addprefix $(OBJDIR)/, $(SRCS:.c=.o))

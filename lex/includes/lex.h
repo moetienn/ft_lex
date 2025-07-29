@@ -33,6 +33,7 @@ typedef struct s_lex
 	t_token			**rpn_list; // linked list of tokens in RPN
 	// NFA
 	t_nfa_state		*super_start; // start state of the NFA
+	t_dfa			*dfa; // DFA representation of the NFA
 }   t_lex;
 
 // utils
@@ -98,11 +99,10 @@ void    from_nfa_to_dfa(t_lex *lex);
 
 
 
-// rpn
-void	rpn(t_lex *lex);
 // rpn utils
 t_token	*create_token_copy(t_token *operand);
 void	append_to_rpn_list(t_token **rpn_list, t_token *operand);
+void	rpn(t_lex *lex);
 // stack
 void    init_stack(t_stack *stack, size_t capacity);
 void	push_stack(t_stack *stack, t_token *token);
