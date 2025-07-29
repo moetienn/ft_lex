@@ -7,4 +7,6 @@ void	from_nfa_to_dfa(t_lex *lex)
         return;
     }
 	printf("Converting NFA to DFA...\n");
+
+    
 }

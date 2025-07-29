@@ -2,6 +2,10 @@
 
 t_nfa_state	*init_nfa_state(int id, bool is_accept)
 {
+	if (id < 0)
+	{
+		id = g_nfa_state_id++;
+	}
 	t_nfa_state *state = malloc(sizeof(t_nfa_state));
 	if (!state)
 	{
@@ -9,6 +13,7 @@ t_nfa_state	*init_nfa_state(int id, bool is_accept)
 		exit(EXIT_FAILURE);
 	}
 	state->id = id;
+	printf("Initializing NFA state with ID: %d\n", state->id);
 	state->is_accept = is_accept;
 	state->transitions = NULL;
 	state->transition_count = 0;
