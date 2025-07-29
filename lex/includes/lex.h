@@ -13,9 +13,10 @@
 #include "dfa/dfa.h"
 
 // ----------- TEST STRUCT -----------
-typedef struct {
+typedef struct
+{
     const char *input;
-    bool expected; // true = ACCEPTED, false = REJECTED
+    bool expected;
 } t_nfa_test;
 
 typedef struct s_lex
@@ -26,14 +27,12 @@ typedef struct s_lex
 	t_rules_list	rules_list;
 	char			*user_code;
 	// NFA
-	// create a linked list that hold the list of t_token *nfa
-	// the NFA is a linked list of tokens
-	t_token			**token_list; // linked list of tokens
+	t_token			**token_list;
 	// RPN
-	t_token			**rpn_list; // linked list of tokens in RPN
+	t_token			**rpn_list;
 	// NFA
-	t_nfa_state		*super_start; // start state of the NFA
-	t_dfa			*dfa; // DFA representation of the NFA
+	t_nfa_state		*super_start;
+	t_dfa			*dfa;
 }   t_lex;
 
 // utils
