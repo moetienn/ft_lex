@@ -22,6 +22,7 @@ typedef struct s_dfa_state
 	int					transition_count;
 	t_nfa_state			**nfa_states;
 	int					nfa_state_count;
+	int                 action_id;
 }	t_dfa_state;
 
 typedef struct s_dfa
@@ -47,5 +48,12 @@ void	init_worklist(t_worklist *wl);
 void	worklist_push(t_worklist *wl, t_dfa_state *state);
 t_dfa_state	*worklist_pop(t_worklist *wl);
 
+// EPSILON
+void	epsilon_closure(t_nfa_state *start, t_nfa_state **closure, int *closure_size, bool *visited);
+void	calculate_epsilon_closure(t_nfa_state **reachable_states, int reachable_count, t_nfa_state ***closure, int *closure_size);
+
+// STATE
+void	find_reachable_states(t_dfa_state *current_state, char symbol, t_nfa_state ***reachable_states, int *reachable_count);
+t_dfa_state *find_or_create_next_state(t_nfa_state **closure, int closure_size, t_dfa_state ***dfa_states, int *dfa_state_count, t_worklist *worklist, t_dfa *dfa);
 
 #endif

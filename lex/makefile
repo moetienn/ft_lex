@@ -39,11 +39,13 @@ NFA = srcs/nfa/nfa.c \
 		srcs/nfa/build_automaton/char_escape_token.c \
 		srcs/nfa/build_automaton/class_token.c \
 		srcs/nfa/build_automaton/quantifier_token.c \
-		srcs/nfa/build_automaton/transition_helpers.c \
-		srcs/nfa/test_nfa.c
+		srcs/nfa/build_automaton/transition_helpers.c
 
 DFA = srcs/dfa/dfa.c \
 		srcs/dfa/alphabet.c \
+		srcs/dfa/generate_lexyyc.c \
+		srcs/dfa/epsilon.c \
+		srcs/dfa/dfa_state.c \
 		srcs/dfa/worklist.c
 
 OBJDIR= obj

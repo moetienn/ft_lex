@@ -12,12 +12,14 @@
 #include "nfa/nfa.h"
 #include "dfa/dfa.h"
 
-// ----------- TEST STRUCT -----------
-typedef struct
-{
-    const char *input;
-    bool expected;
-} t_nfa_test;
+// MACROS
+#undef CHECK_ALLOC
+#define CHECK_ALLOC(ptr, cleanup, msg, ret_val) \
+	if (!(ptr)) { \
+		fprintf(stderr, msg "\n"); \
+		cleanup; \
+		return ret_val; \
+	}
 
 typedef struct s_lex
 {
@@ -25,12 +27,10 @@ typedef struct s_lex
 	t_macros_list	macros_list;
 	t_parser		parser;
 	t_rules_list	rules_list;
+	int				rule_index;
 	char			*user_code;
-	// NFA
 	t_token			**token_list;
-	// RPN
 	t_token			**rpn_list;
-	// NFA
 	t_nfa_state		*super_start;
 	t_dfa			*dfa;
 }   t_lex;
@@ -69,34 +69,21 @@ void    add_concat_tokens(t_lex *lex);
 // -------- NFA --------
 
 // init nfa
-t_nfa_state		*init_nfa_state(int id, bool is_accept);
+t_nfa_state		*init_nfa_state(int id, bool is_accept, int rule_index);
 t_nfa_fragment	*init_nfa_fragment(t_nfa_state *start, t_nfa_state *accept);
 
 // nfa utils
+
 t_nfa_state	*create_new_state(void);
 t_frag_stack	*stack_create(void);
 t_nfa_fragment *pop_stack_frag(t_frag_stack *stack);
 void    push_stack_frag(t_frag_stack *stack, t_nfa_fragment *fragment);
 
-
-
-
-// TESTER DONT FORGET TO REMOVE
-bool	test_nfa(t_nfa_state *start_state, const char *input);
-void run_nfa_test_suite(
-    t_nfa_state *start_state,
-    const t_nfa_test *tests,
-    size_t n_tests,
-    const char *test_suite_name
-);
-void    run_test_suites(t_lex *lex);
-
-
 // DFA
 
+void	generate_lexyyc(t_lex *lex, const char *alphabet, int alphabet_size);
 void    from_nfa_to_dfa(t_lex *lex);
-
-
+void    compute_closure_epsilon(t_lex *lex);
 
 // rpn utils
 t_token	*create_token_copy(t_token *operand);

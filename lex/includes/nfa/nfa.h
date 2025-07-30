@@ -56,8 +56,8 @@ typedef struct s_nfa_state
 
 typedef struct s_nfa_transition
 {
-	t_nfa_state	*to;   // To state
-	char		symbol; // Transition symbol (for character transitions)
+	t_nfa_state	*to;
+	char		symbol;
 }	t_nfa_transition;
 
 typedef struct s_nfa_fragment
@@ -68,7 +68,7 @@ typedef struct s_nfa_fragment
 
 typedef struct s_frag_stack
 {
-	t_nfa_fragment	**fragments; // Array of pointers to NFA fragments
+	t_nfa_fragment	**fragments;
 	size_t			top;
 	size_t			capacity;
 }	t_frag_stack;
@@ -103,14 +103,14 @@ void	add_empty_transition(t_nfa_state *new_start, t_nfa_state *new_accept);
 
 // process nfa token
 void	add_transition(t_nfa_state *state, t_nfa_transition *transition);
-void	process_token_plus(t_frag_stack *frag_stack);
+void	process_token_plus(t_frag_stack *frag_stack, int rule_index);
 void	process_token_concat(t_frag_stack *frag_stack);
-void	process_token_kleene_star(t_frag_stack *frag_stack);
-void	process_token_alternation(t_frag_stack *frag_stack);
-void	process_token_optional(t_frag_stack *frag_stack);
-void	process_token_quantifier(t_frag_stack *frag_stack, t_token *current_token);
-t_nfa_fragment	*process_token_char(t_token *current_token);
-t_nfa_fragment	*process_token_escape(t_token *current_token);
-t_nfa_fragment	*process_token_class(t_token *current_token);
+void	process_token_kleene_star(t_frag_stack *frag_stack, int rule_index);
+void	process_token_alternation(t_frag_stack *frag_stack, int rule_index);
+void	process_token_optional(t_frag_stack *frag_stack, int rule_index);
+void	process_token_quantifier(t_frag_stack *frag_stack, t_token *current_token, int rule_index);
+t_nfa_fragment	*process_token_char(t_token *current_token, int rule_index);
+t_nfa_fragment	*process_token_escape(t_token *current_token, int rule_index);
+t_nfa_fragment	*process_token_class(t_token *current_token, int rule_index);
 
 #endif

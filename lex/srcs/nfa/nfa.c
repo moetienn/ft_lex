@@ -25,7 +25,7 @@ static t_nfa_fragment	**initialize_rule_fragments(size_t rule_count)
 	return (rule_frags);
 }
 
-static t_nfa_fragment	*process_rule(t_token *current_token)
+static t_nfa_fragment	*process_rule(t_token *current_token, int rule_index)
 {
 	t_frag_stack	*frag_stack = stack_create();
 	while (current_token)
@@ -33,23 +33,23 @@ static t_nfa_fragment	*process_rule(t_token *current_token)
 		t_nfa_fragment *fragment = NULL;
 
 		if (current_token->type == TOKEN_ESCAPE)
-			fragment = process_token_escape(current_token);
+			fragment = process_token_escape(current_token, rule_index);
 		else if (current_token->type == TOKEN_CHAR)
-			fragment = process_token_char(current_token);
+			fragment = process_token_char(current_token, rule_index);
 		else if (current_token->type == TOKEN_KLEENE_STAR)
-			process_token_kleene_star(frag_stack);
+			process_token_kleene_star(frag_stack, rule_index);
 		else if (current_token->type == TOKEN_PLUS)
-			process_token_plus(frag_stack);
+			process_token_plus(frag_stack, rule_index);
 		else if (current_token->type == TOKEN_CONCAT)
 			process_token_concat(frag_stack);
 		else if (current_token->type == TOKEN_ALTERNATION)
-			process_token_alternation(frag_stack);
+			process_token_alternation(frag_stack, rule_index);
 		else if (current_token->type == TOKEN_OPTIONAL)
-			process_token_optional(frag_stack);
+			process_token_optional(frag_stack, rule_index);
 		else if (current_token->type == TOKEN_CLASS)
-			fragment = process_token_class(current_token);
+			fragment = process_token_class(current_token, rule_index);
 		else if (current_token->type == TOKEN_QUANTIFIER)
-			process_token_quantifier(frag_stack, current_token);
+			process_token_quantifier(frag_stack, current_token, rule_index);
 		if (fragment)
 			push_stack_frag(frag_stack, fragment);
 		current_token = current_token->next;
@@ -85,7 +85,7 @@ void	build_nfa_from_rpn(t_lex *lex)
 	for (size_t i = 0; i < rule_count; i++)
 	{
 		t_token *current_token = lex->rpn_list[i];
-		rule_frags[i] = process_rule(current_token);
+		rule_frags[i] = process_rule(current_token, i);
 		rule_frags[i]->accept->rule_index = i;
 	}
 	add_epsilon_transitions(super_start, rule_frags, rule_count);
@@ -105,5 +105,4 @@ void	build_nfa(t_lex *lex)
     add_concat_tokens(lex);
     rpn(lex);
     build_nfa_from_rpn(lex);
-    // run_test_suites(lex);
 }

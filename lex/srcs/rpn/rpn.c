@@ -13,7 +13,7 @@ void	handle_operator(t_token *current_token, t_stack *operator_stack, t_token **
         {
             while (operator_stack->top > 0 && operator_stack->data[operator_stack->top - 1]->type != TOKEN_LPAREN)
             {
-                t_token *top_operator = pop_stack(operator_stack); // Pop operators until left parenthesis
+                t_token *top_operator = pop_stack(operator_stack);
                 append_to_rpn_list(rpn_list, top_operator);
             }
         }

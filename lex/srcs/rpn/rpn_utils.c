@@ -26,14 +26,14 @@ void	append_to_rpn_list(t_token **rpn_list, t_token *operand)
 
     if (!*rpn_list)
     {
-        *rpn_list = new_operand; // Set as head if list is empty
+        *rpn_list = new_operand;
         return;
     }
 
     t_token *current = *rpn_list;
     while (current->next)
     {
-        current = current->next; // Traverse to the end of the list
+        current = current->next;
     }
-    current->next = new_operand; // Append operand to the end
+    current->next = new_operand;
 }

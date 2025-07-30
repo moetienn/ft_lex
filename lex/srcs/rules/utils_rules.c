@@ -48,6 +48,5 @@ void    free_rules_list(t_rules_list *rules_list)
     }
     free(rules_list->list);
     rules_list->list = NULL;
-    // rules_list->count = 0;
     rules_list->capacity = 0;
 }

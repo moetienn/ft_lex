@@ -15,6 +15,6 @@ int	init_parser(t_parser *parser)
 		fclose(parser->file);
 		return (1);
 	}
-	parser->buffer[0] = '\0'; // Initialize buffer to empty string
+	parser->buffer[0] = '\0';
 	return (0);
 }

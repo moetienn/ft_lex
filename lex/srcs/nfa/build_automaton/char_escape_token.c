@@ -16,10 +16,10 @@ char decode_escape(char c)
 	}
 }
 
-t_nfa_fragment	*process_token_escape(t_token *current_token)
+t_nfa_fragment	*process_token_escape(t_token *current_token, int rule_index)
 {
-	t_nfa_state *start = init_nfa_state(-1, false);
-	t_nfa_state *accept = init_nfa_state(-1, false);
+	t_nfa_state *start = init_nfa_state(-1, false, rule_index);
+	t_nfa_state *accept = init_nfa_state(-1, false, rule_index);
 	t_nfa_transition *transition = malloc(sizeof(t_nfa_transition));
 	if (!transition)
 	{
@@ -33,10 +33,10 @@ t_nfa_fragment	*process_token_escape(t_token *current_token)
 	return (fragment);
 }
 
-t_nfa_fragment	*process_token_char(t_token *current_token)
+t_nfa_fragment	*process_token_char(t_token *current_token, int rule_index)
 {
-	t_nfa_state *start = init_nfa_state(-1, false);
-	t_nfa_state *accept = init_nfa_state(-1, false);
+	t_nfa_state *start = init_nfa_state(-1, false, rule_index);
+	t_nfa_state *accept = init_nfa_state(-1, false, rule_index);
 	t_nfa_transition *transition = malloc(sizeof(t_nfa_transition));
 	if (!transition)
 	{

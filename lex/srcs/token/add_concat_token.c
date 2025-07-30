@@ -51,7 +51,6 @@ void    add_concat_tokens(t_lex *lex)
         {
             if (is_atom_quantif_rparen(current) && is_atom_opengroup(current->next))
             {
-                // Create a new concatenation token
                 t_token *concat_token = malloc(sizeof(t_token));
                 if (!concat_token)
                 {
@@ -59,7 +58,7 @@ void    add_concat_tokens(t_lex *lex)
                     exit(EXIT_FAILURE);
                 }
                 concat_token->type = TOKEN_CONCAT;
-                concat_token->value = strdup("·"); // Concatenation symbol
+                concat_token->value = strdup("·");
                 concat_token->next = current->next;
                 current->next = concat_token;
             }

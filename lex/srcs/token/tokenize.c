@@ -45,14 +45,14 @@ void	tokenize_patterns(t_lex *lex)
 {
 	for (size_t i = 0; i < lex->rules_list.count; i++)
 	{
-		if (!lex->rules_list.list[i].pattern) // Ensure pattern is valid
+		if (!lex->rules_list.list[i].pattern)
 		{
 			fprintf(stderr, "Error: Pattern for rule %zu is NULL\n", i);
 			continue;
 		}
 
 		t_token *current = NULL;
-		size_t pattern_length = strlen(lex->rules_list.list[i].pattern); // Get pattern length
+		size_t pattern_length = strlen(lex->rules_list.list[i].pattern);
 
 		process_pattern_tokens(lex, i, pattern_length, &current);
 	}
