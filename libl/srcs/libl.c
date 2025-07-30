@@ -4,6 +4,7 @@ char*	yytext = NULL;  // Pointer to the current token text
 int		yyleng = 0;       // Length of the current token text
 FILE*	yyin = NULL;    // Input file pointer
 FILE*	yyout = NULL;   // Output file pointer
+int		yy_more_flag = 0; // Flag to indicate if more text will be appended to yytext
 
 // Append the next lexeme to yytext rather than replacing it
 int yymore(void)
