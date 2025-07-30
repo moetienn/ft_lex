@@ -1,10 +1,10 @@
 #include "../../../includes/lex.h"
 
-void    process_token_optional(t_frag_stack *frag_stack)
+void    process_token_optional(t_frag_stack *frag_stack, int rule_index)
 {
 	t_nfa_fragment *fragment = pop_stack_frag(frag_stack);
-	t_nfa_state *new_start = init_nfa_state(-1, false);
-	t_nfa_state *new_accept = init_nfa_state(-1, false);
+	t_nfa_state *new_start = init_nfa_state(-1, false, rule_index);
+	t_nfa_state *new_accept = init_nfa_state(-1, false, rule_index);
 
 
 	add_enter_transition(new_start, fragment->start);
@@ -16,13 +16,13 @@ void    process_token_optional(t_frag_stack *frag_stack)
 	free(fragment);
 }
 
-void	process_token_alternation(t_frag_stack *frag_stack)
+void	process_token_alternation(t_frag_stack *frag_stack, int rule_index)
 {
 	t_nfa_fragment *fragment_b = pop_stack_frag(frag_stack);
 	t_nfa_fragment *fragment_a = pop_stack_frag(frag_stack);
 
-	t_nfa_state *new_start = init_nfa_state(-1, false);
-	t_nfa_state *new_accept = init_nfa_state(-1, false);
+	t_nfa_state *new_start = init_nfa_state(-1, false, rule_index);
+	t_nfa_state *new_accept = init_nfa_state(-1, false, rule_index);
 	add_enter_transition(new_start, fragment_a->start);
 	add_enter_transition(new_start, fragment_b->start);
 	add_exit_transition(fragment_a->accept, new_accept);

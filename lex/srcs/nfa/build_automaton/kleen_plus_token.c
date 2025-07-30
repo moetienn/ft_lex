@@ -1,10 +1,10 @@
 #include "../../../includes/lex.h"
 
-void	process_token_kleene_star(t_frag_stack *frag_stack)
+void	process_token_kleene_star(t_frag_stack *frag_stack, int rule_index)
 {
     t_nfa_fragment *fragment = pop_stack_frag(frag_stack);
-    t_nfa_state *new_start = init_nfa_state(-1, false);
-    t_nfa_state *new_accept = init_nfa_state(-1, false);
+    t_nfa_state *new_start = init_nfa_state(-1, false, rule_index);
+    t_nfa_state *new_accept = init_nfa_state(-1, false, rule_index);
 
     add_loop_transition(fragment->accept, fragment->start);
     add_exit_transition(fragment->accept, new_accept);
@@ -17,10 +17,10 @@ void	process_token_kleene_star(t_frag_stack *frag_stack)
     fragment = NULL;
 }
 
-void	process_token_plus(t_frag_stack *frag_stack)
+void	process_token_plus(t_frag_stack *frag_stack, int rule_index)
 {
 	t_nfa_fragment *fragment = pop_stack_frag(frag_stack);
-	t_nfa_state *new_accept = init_nfa_state(-1, false);
+	t_nfa_state *new_accept = init_nfa_state(-1, false, rule_index);
 	t_nfa_transition *loop = malloc(sizeof(t_nfa_transition));
 	if (!loop)
 	{

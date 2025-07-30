@@ -1,9 +1,9 @@
 #include "../../../includes/lex.h"
 
-t_nfa_fragment	*process_token_class(t_token *current_token)
+t_nfa_fragment	*process_token_class(t_token *current_token, int rule_index)
 {
-	t_nfa_state *start = init_nfa_state(-1, false);
-	t_nfa_state *accept = init_nfa_state(-1, true);
+	t_nfa_state *start = init_nfa_state(-1, false, rule_index);
+	t_nfa_state *accept = init_nfa_state(-1, true, rule_index);
 	t_nfa_fragment *fragment = init_nfa_fragment(start, accept);
 
 	const char *value = current_token->value;

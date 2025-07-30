@@ -1,13 +1,9 @@
-# Main Makefile
-
-# Variables
 LEX_DIR = lex
 LIBL_DIR = libl
 OUTPUT_BINARY = scanner
 LIBL_BINARY = $(LIBL_DIR)/libl.a
 LEX_YY_C = lex.yy.c
 
-# Targets
 .PHONY: all lex libl clean fclean re run
 
 all: $(OUTPUT_BINARY)

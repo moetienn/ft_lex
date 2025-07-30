@@ -5,7 +5,7 @@ bool	priority_check(t_token *current, t_stack *operator_stack)
 {
 	if (operator_stack->top == 0)
 	{
-		return false; // If stack is empty, push the operator
+		return false;
 	}
 	int priority_current = 0;
 	if (current->type == TOKEN_KLEENE_STAR || current->type == TOKEN_PLUS || current->type == TOKEN_OPTIONAL)

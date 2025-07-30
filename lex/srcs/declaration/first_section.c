@@ -24,7 +24,7 @@ void	get_declaration_code(t_parser *parser, t_lex *lex, size_t *i)
 				}
 				strncpy(lex->declaration_code, &parser->first_section[start], len);
 				lex->declaration_code[len] = '\0';
-				(*i) += 3; // Skip the closing %}
+				(*i) += 3;
 				return ;
 			}
 		}
@@ -39,7 +39,6 @@ void    collect_first_section(t_parser *parser, t_lex *lex)
 		fprintf(stderr, "Error: Invalid parser or lex structure.\n");
 		return;
 	}
-	// Initialize lex declaration_code
 	lex->declaration_code = NULL;
 	size_t i = 0;
 	get_declaration_code(parser, lex, &i);

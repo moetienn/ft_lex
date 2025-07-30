@@ -7,7 +7,7 @@ void	class_token(t_token *current, t_lex *lex, size_t i, size_t *j)
 		(*j)++;
 	if (lex->rules_list.list[i].pattern[*j] == ']')
 	{
-		current->value = malloc(*j - start + 2); // Allocate memory for the token value
+		current->value = malloc(*j - start + 2);
 		if (!current->value)
 		{
 			perror("Memory allocation failed for class token value");
@@ -133,8 +133,8 @@ void	escape_token(t_token *current, t_lex *lex, size_t i, size_t *j)
     }
     else
     {
-        size_t escape_length = 2; // Escape sequence length (e.g., \n, \t)
-        current->value = malloc(escape_length + 1); // Allocate memory for escape sequence + null terminator
+        size_t escape_length = 2;
+        current->value = malloc(escape_length + 1);
         if (!current->value)
         {
             perror("Memory allocation failed for escape token value");
@@ -232,7 +232,7 @@ void	quantifier_token(t_token *current, t_lex *lex, size_t i, size_t *j)
 
 void	char_token(t_token *current, t_lex *lex, size_t i, size_t *j)
 {
-	current->value = malloc(2); // Allocate memory for a single character + null terminator
+	current->value = malloc(2);
 	if (!current->value)
 	{
 		perror("Memory allocation failed for char token value");

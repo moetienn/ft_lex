@@ -24,7 +24,7 @@ t_token_type get_token_type(char c)
 	else if (c == '{')
 		return TOKEN_QUANTIFIER;
 	else
-		return TOKEN_CHAR; // Default to literal character
+		return TOKEN_CHAR;
 }
 
 void	free_token_list(t_token **token_list, size_t count)
@@ -37,13 +37,13 @@ void	free_token_list(t_token **token_list, size_t count)
 		t_token *current = token_list[i];
 		while (current)
 		{
-			t_token *next = current->next; // Save the next pointer
+			t_token *next = current->next;
 			if (current->value)
 			{
 				free(current->value);
 			}
-			free(current); // Free the current node
-			current = next; // Move to the next node
+			free(current);
+			current = next;
 		}
 	}
 	free(token_list);
@@ -54,7 +54,7 @@ void	init_token_list(t_token ***token_list, size_t count)
 	if (!token_list)
 		return;
 
-	*token_list = calloc(count, sizeof(t_token *)); // Use calloc to initialize all entries to NULL
+	*token_list = calloc(count, sizeof(t_token *));
 	if (!*token_list)
 	{
 		perror("Failed to allocate memory for token list");
@@ -64,7 +64,7 @@ void	init_token_list(t_token ***token_list, size_t count)
 
 void	add_next_token(t_token **current, t_token_type type, const char *value)
 {
-	(void) value; // If value is not used, we can ignore it
+	(void) value;
 	(*current)->next = malloc(sizeof(t_token));
 	if (!(*current)->next)
 	{
@@ -74,7 +74,7 @@ void	add_next_token(t_token **current, t_token_type type, const char *value)
 	(*current)->next->type = type;
 	(*current)->next->value = NULL;
 	(*current)->next->next = NULL;
-	*current = (*current)->next; // Move the current pointer to the newly created token
+	*current = (*current)->next;
 }
 
 void	initialize_first_token(t_token **token_list, t_token **current, t_token_type type)

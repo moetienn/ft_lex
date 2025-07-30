@@ -1,6 +1,6 @@
 #include "../../includes/lex.h"
 
-t_nfa_state	*init_nfa_state(int id, bool is_accept)
+t_nfa_state	*init_nfa_state(int id, bool is_accept, int rule_index)
 {
 	(void)id;
 	t_nfa_state *state = malloc(sizeof(t_nfa_state));
@@ -10,12 +10,11 @@ t_nfa_state	*init_nfa_state(int id, bool is_accept)
 		exit(EXIT_FAILURE);
 	}
 	state->id = g_nfa_state_id++;
-	printf("Initializing NFA state with ID: %d\n", state->id);
 	state->is_accept = is_accept;
 	state->transitions = NULL;
 	state->transition_count = 0;
 	state->transition_capacity = 0;
-	state->rule_index = -1;
+	state->rule_index = rule_index;
 	state->visited = false;
 	return state;
 }

@@ -5,8 +5,8 @@ t_nfa_fragment    *clone_fragment(t_nfa_fragment *fragment)
 	if (!fragment)
 		return NULL;
 
-	t_nfa_state *new_start = init_nfa_state(fragment->start->id, false);
-	t_nfa_state *new_accept = init_nfa_state(fragment->accept->id, fragment->accept->is_accept);
+	t_nfa_state *new_start = init_nfa_state(fragment->start->id, false, fragment->start->rule_index);
+	t_nfa_state *new_accept = init_nfa_state(fragment->accept->id, fragment->accept->is_accept, fragment->accept->rule_index);
 
 	t_nfa_fragment *new_fragment = init_nfa_fragment(new_start, new_accept);
 
@@ -114,7 +114,7 @@ static t_nfa_fragment *finalize_quantified_fragment(t_nfa_state *new_start, t_nf
     return (quantified_fragment);
 }
 
-void    process_token_quantifier(t_frag_stack *frag_stack, t_token *current_token)
+void    process_token_quantifier(t_frag_stack *frag_stack, t_token *current_token, int rule_index)
 {
     t_nfa_fragment *original_fragment = pop_stack_frag(frag_stack);
 
@@ -126,7 +126,7 @@ void    process_token_quantifier(t_frag_stack *frag_stack, t_token *current_toke
     int min_repetitions, max_repetitions;
     if (parse_quantifier(current_token->value, &min_repetitions, &max_repetitions) != 0)
         exit(EXIT_FAILURE);
-    t_nfa_state *new_start = init_nfa_state(-1, false);
+    t_nfa_state *new_start = init_nfa_state(-1, false, rule_index);
     t_nfa_state *current_accept = new_start;
     add_first_transition(current_accept, original_fragment);
     current_accept = original_fragment->accept;
