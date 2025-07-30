@@ -208,7 +208,7 @@ void	generate_lexyyc(t_lex *lex, const char *alphabet, int alphabet_size)
 		return;
 	}
 
-	fprintf(file, "#include \"libl.h\"\n");
+	fprintf(file, "#include \"libl/includes/libl.h\"\n");
 	if (lex->declaration_code)
 		fprintf(file, "%s\n", lex->declaration_code);
 
@@ -239,9 +239,8 @@ void	generate_lexyyc(t_lex *lex, const char *alphabet, int alphabet_size)
     printf("lex->dfa->state_count: %d\n", lex->dfa->state_count);
 	for (int s = 0; s < lex->dfa->state_count; ++s)
     {
-		t_dfa_state *state = lex->dfa->states[s];
-        printf("Processing state ID: %d\n", state->id);
-        // printf("State ID: %d, Accept: %d, Transitions: %d\n", state->id, state->is_accept, state->transition_count);
+        printf("lex->dfa->states[%d]: %p\n", s, lex->dfa->states[s]);
+        t_dfa_state *state = lex->dfa->states[s];
 		fprintf(file, "    { %d, {", state->is_accept ? 1 : 0);
 		for (int a = 0; a < alphabet_size; ++a)
         {
@@ -257,7 +256,7 @@ void	generate_lexyyc(t_lex *lex, const char *alphabet, int alphabet_size)
 			if (a < alphabet_size - 1)
 				fprintf(file, ", ");
 		}
-		fprintf(file, "}, %d }", 0);
+		fprintf(file, "}, %d }", 1);
 		if (s < lex->dfa->state_count - 1)
 			fprintf(file, ",\n");
 		else
@@ -277,6 +276,9 @@ void	generate_lexyyc(t_lex *lex, const char *alphabet, int alphabet_size)
 	fprintf(file, "    switch(action_id) {\n");
 	for (size_t i = 0; i < lex->rules_list.count; ++i) {
 		fprintf(file, "        case %ld: %s; break;\n", i+1, lex->rules_list.list[i].action);
+	}
+    for (size_t i = 0; i < lex->rules_list.count; ++i) {
+		printf("        case %ld: %s; break;\n", i+1, lex->rules_list.list[i].action);
 	}
 	fprintf(file, "    }\n}\n\n");
 
@@ -369,6 +371,10 @@ void from_nfa_to_dfa(t_lex *lex)
             process_symbol(current_state, symbol, &dfa_states, &dfa_state_count, &worklist, alphabet_size, lex->dfa);
         }
     }
+    lex->dfa->states = dfa_states;
+    lex->dfa->accept_states = malloc(sizeof(t_dfa_state*) * dfa_state_count);
+
+
     generate_lexyyc(lex, alphabet, alphabet_size);
 
     free(lex->dfa->start_state);
