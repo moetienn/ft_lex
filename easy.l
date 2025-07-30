@@ -3,17 +3,30 @@
 %}
 
 DIGIT   [0-9]
-LETTER  [a-z]
 
 %%
 
 {DIGIT}+        	{ printf("NUMBER: %s\n", yytext); }
-{LETTER}*			{ printf("FOUND %zu letter(s): \"%s\"\n", yyleng, yytext); }
 
 %%
 
-int main(void)
+int main(int argc, char **argv)
 {
-	/* yyin et yyout sont gérés par libl */
-	return yylex();
+    if(argc > 1)
+	{
+        yyin = fopen(argv[1], "r");
+        if (!yyin)
+		{
+            perror(argv[1]);
+            return 1;
+        }
+    }
+	else
+	{
+        yyin = stdin;
+    }
+    
+    yylex();
+    
+    return 0;
 }
