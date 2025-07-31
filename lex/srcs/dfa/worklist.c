@@ -1,5 +1,21 @@
 #include "../../includes/dfa/dfa.h"
 
+void	free_worklist(t_worklist *wl)
+{
+	if (!wl)
+		return;
+	for (int i = 0; i < wl->size; ++i)
+	{
+		free(wl->states[i]->transitions);
+		free(wl->states[i]->nfa_states);
+		free(wl->states[i]);
+	}
+	free(wl->states);
+	wl->states = NULL;
+	wl->size = 0;
+	wl->capacity = 0;
+}
+
 void	init_worklist(t_worklist *wl)
 {
 	wl->size = 0;

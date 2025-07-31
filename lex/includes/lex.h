@@ -83,7 +83,7 @@ void    push_stack_frag(t_frag_stack *stack, t_nfa_fragment *fragment);
 
 void	generate_lexyyc(t_lex *lex, const char *alphabet, int alphabet_size);
 void    from_nfa_to_dfa(t_lex *lex);
-void    compute_closure_epsilon(t_lex *lex);
+void    compute_closure_epsilon(t_lex *lex, t_memory_stack *mem_stack);
 
 // rpn utils
 t_token	*create_token_copy(t_token *operand);

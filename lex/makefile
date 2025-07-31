@@ -39,6 +39,7 @@ NFA = srcs/nfa/nfa.c \
 		srcs/nfa/build_automaton/char_escape_token.c \
 		srcs/nfa/build_automaton/class_token.c \
 		srcs/nfa/build_automaton/quantifier_token.c \
+		srcs/nfa/build_automaton/quote_token.c \
 		srcs/nfa/build_automaton/transition_helpers.c
 
 DFA = srcs/dfa/dfa.c \
@@ -46,7 +47,8 @@ DFA = srcs/dfa/dfa.c \
 		srcs/dfa/generate_lexyyc.c \
 		srcs/dfa/epsilon.c \
 		srcs/dfa/dfa_state.c \
-		srcs/dfa/worklist.c
+		srcs/dfa/worklist.c \
+		srcs/dfa/memory_stack.c
 
 OBJDIR= obj
 OBJS= $(addprefix $(OBJDIR)/, $(SRCS:.c=.o))
@@ -84,5 +86,6 @@ clean:
 fclean: clean
 	rm -f $(NAME)
 	rm -rf $(OBJDIR)
+	rm -f lex.yy.c
 
 re: fclean all

@@ -49,6 +49,7 @@ void	shunting_yard(t_lex *lex)
 		t_token *current_token = lex->token_list[i];
 		while (current_token)
 		{
+            printf("Processing token: %s\n", current_token->value);
 			if (is_operand(current_token->type))
 				append_to_rpn_list(&lex->rpn_list[i], current_token);
 			else if (is_operator(current_token->type))

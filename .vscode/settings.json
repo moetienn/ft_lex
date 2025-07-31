@@ -5,6 +5,7 @@
         "macros.h": "c",
         "lex.h": "c",
         "nfa.h": "c",
-        "dfa.h": "c"
+        "dfa.h": "c",
+        "stdint.h": "c"
     }
 }

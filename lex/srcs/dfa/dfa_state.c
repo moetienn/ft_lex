@@ -1,7 +1,7 @@
 #include "../../includes/lex.h"
 #include "../../includes/dfa/dfa.h"
 
-void	find_reachable_states(t_dfa_state *current_state, char symbol, t_nfa_state ***reachable_states, int *reachable_count)
+void	find_reachable_states(t_dfa_state *current_state, char symbol, t_nfa_state ***reachable_states, int *reachable_count, t_memory_stack *mem_stack)
 {
 	*reachable_states = malloc(sizeof(t_nfa_state*) * 100);
 	if (!*reachable_states)
@@ -9,6 +9,7 @@ void	find_reachable_states(t_dfa_state *current_state, char symbol, t_nfa_state 
 		fprintf(stderr, "Error: Failed to allocate memory for reachable states\n");
 		return;
 	}
+	push_memory_stack(mem_stack, *reachable_states);
 	bool *visited = calloc(g_nfa_state_id, sizeof(bool));
 	CHECK_ALLOC(visited, free(*reachable_states), "Error: Failed to allocate memory for visited states", );
 	*reachable_count = 0;

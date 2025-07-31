@@ -112,5 +112,6 @@ void	process_token_quantifier(t_frag_stack *frag_stack, t_token *current_token, 
 t_nfa_fragment	*process_token_char(t_token *current_token, int rule_index);
 t_nfa_fragment	*process_token_escape(t_token *current_token, int rule_index);
 t_nfa_fragment	*process_token_class(t_token *current_token, int rule_index);
+t_nfa_fragment	*process_token_quote(t_token *current_token, int rule_index);
 
 #endif
