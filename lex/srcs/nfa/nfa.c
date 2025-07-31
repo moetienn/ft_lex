@@ -50,6 +50,8 @@ static t_nfa_fragment	*process_rule(t_token *current_token, int rule_index)
 			fragment = process_token_class(current_token, rule_index);
 		else if (current_token->type == TOKEN_QUANTIFIER)
 			process_token_quantifier(frag_stack, current_token, rule_index);
+		else if (current_token->type == TOKEN_QUOTE)
+			fragment = process_token_quote(current_token, rule_index);
 		if (fragment)
 			push_stack_frag(frag_stack, fragment);
 		current_token = current_token->next;

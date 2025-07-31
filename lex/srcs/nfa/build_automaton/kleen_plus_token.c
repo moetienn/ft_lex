@@ -19,6 +19,11 @@ void	process_token_kleene_star(t_frag_stack *frag_stack, int rule_index)
 
 void	process_token_plus(t_frag_stack *frag_stack, int rule_index)
 {
+	if (is_empty_stack_frag(frag_stack))
+	{
+		fprintf(stderr, "Error: Stack is empty when processing plus token\n");
+		exit(EXIT_FAILURE);
+	}
 	t_nfa_fragment *fragment = pop_stack_frag(frag_stack);
 	t_nfa_state *new_accept = init_nfa_state(-1, false, rule_index);
 	t_nfa_transition *loop = malloc(sizeof(t_nfa_transition));
