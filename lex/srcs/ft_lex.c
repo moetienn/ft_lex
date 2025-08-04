@@ -1,4 +1,5 @@
 #include "../includes/lex.h"
+#include "../includes/error/error.h"
 #include "../includes/declaration/first_section.h"
 
 void	init_lex(t_lex *lex)
@@ -25,6 +26,7 @@ void    ft_lex(const char *filename)
 	t_parser	parser;
 	t_lex		lex;
 
+	initialize_error(&parser.error);
 	parser.file = file;
 	parser.filename = strdup(filename);
 	parse_file(&parser);

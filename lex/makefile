@@ -10,6 +10,8 @@ UTILSSRCS= srcs/utils/utils.c \
 PARSER = srcs/parser/parse_file.c \
 			srcs/parser/init_parser.c
 
+ERROR = srcs/error/error.c
+
 DECLARATION = srcs/declaration/first_section.c \
 				srcs/declaration/utils_macros.c \
 				srcs/declaration/macros.c
@@ -64,6 +66,7 @@ CC= cc
 
 HDR= includes/lex.h \
 	 includes/parser.h \
+	 includes/error/error.h \
 	 includes/declaration/macros.h \
 	 includes/declaration/first_section.h \
 	 includes/nfa/nfa.h \
@@ -77,8 +80,8 @@ $(OBJDIR)/%.o: %.c $(HDR)
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(NAME): $(OBJS) $(UTILSOBJS) $(PARSEROBJS) $(DECLARATION_OBJS) $(RULES_OBJS) $(NFA_OBJS) $(TOKEN_OBJS) $(RPN_OBJS) $(DFA)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(UTILSOBJS) $(PARSEROBJS) $(DECLARATION_OBJS) $(RULES_OBJS) $(NFA_OBJS) $(LDFLAGS) $(TOKEN_OBJS) $(RPN_OBJS) $(DFA)
+$(NAME): $(OBJS) $(UTILSOBJS) $(PARSEROBJS) $(DECLARATION_OBJS) $(RULES_OBJS) $(NFA_OBJS) $(TOKEN_OBJS) $(RPN_OBJS) $(DFA) $(ERROR)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(UTILSOBJS) $(PARSEROBJS) $(DECLARATION_OBJS) $(RULES_OBJS) $(NFA_OBJS) $(LDFLAGS) $(TOKEN_OBJS) $(RPN_OBJS) $(DFA) $(ERROR)
 
 clean:
 	rm -f $(OBJDIR)/*.o

@@ -8,6 +8,8 @@ int	init_parser(t_parser *parser)
 	parser->buffer = malloc(1);
 	parser->buffer[0] = '\0';
 	parser->line = NULL;
+	parser->is_ok = 1;
+	parser->error_line = 0;
 	parser->len = 0;
 	if (!parser->buffer)
 	{

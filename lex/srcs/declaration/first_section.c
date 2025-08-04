@@ -7,8 +7,9 @@ void	get_declaration_code(t_parser *parser, t_lex *lex, size_t *i)
 	{
 		if (parser->first_section[*i] == '%' && parser->first_section[*i + 1] == '{')
 		{
+			parser->is_ok = 0;
 			*i += 2;
-			if (parser->first_section[*i] == '\n')
+			if (parser->first_section[*i] == '\n' || parser->first_section[*i] == '\r')
 				(*i)++;
 			size_t start = *i;
 			while (parser->first_section[*i] && !(parser->first_section[*i] == '%' && parser->first_section[*i + 1] == '}'))
@@ -25,10 +26,12 @@ void	get_declaration_code(t_parser *parser, t_lex *lex, size_t *i)
 				strncpy(lex->declaration_code, &parser->first_section[start], len);
 				lex->declaration_code[len] = '\0';
 				(*i) += 3;
+				parser->is_ok = 1;
 				return ;
 			}
 		}
-		(*i)++;
+		if (parser->first_section[*i] == '\n' || parser->first_section[*i] == '\r')
+			parser->error_line++;
 	}
 }
 
@@ -42,5 +45,11 @@ void    collect_first_section(t_parser *parser, t_lex *lex)
 	lex->declaration_code = NULL;
 	size_t i = 0;
 	get_declaration_code(parser, lex, &i);
+	if (parser->is_ok == 0)
+	{
+		fprintf(stderr, "%s:%d: Premature EOF.\n", parser->filename, parser->error_line);
+		free_parser(parser);
+		exit(EXIT_FAILURE);
+	}
 	collect_macros(lex, &i);
 }

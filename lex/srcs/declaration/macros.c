@@ -47,6 +47,8 @@ void	collect_macros(t_lex *lex, size_t *i)
 	char	*name = NULL;
 	char	*value = NULL;
 
+	if (lex->declaration_code == NULL)
+		*i = 0;
 	while (lex->parser.first_section[*i])
 	{
 		if (lex->parser.first_section[*i] != ' ' && lex->parser.first_section[*i] != '\t' && lex->parser.first_section[*i] != '\n' && lex->parser.first_section[*i] != '[')
