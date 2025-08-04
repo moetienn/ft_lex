@@ -9,6 +9,5 @@ int main(int ac, char **av)
     }
     file_error(av[1]);
     ft_lex(av[1]);
-    
     return 0;
 }

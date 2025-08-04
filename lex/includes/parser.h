@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "error/error.h"
 // #include <unistd.h>
 
 typedef enum e_section
@@ -16,9 +17,12 @@ typedef enum e_section
 typedef struct s_parser
 {
 	FILE		*file;
+	t_error		error;
 	char		*filename;
 	char		*buffer;
 	char		*line;
+	int			is_ok;
+	int			error_line;
 	size_t		len;
 	char		*first_section;
 	char		*second_section;
@@ -29,7 +33,7 @@ typedef struct s_parser
 
 // UTILS.C
 void 	append_to_buffer(t_parser *parser, const char *line);
-void	trim_whitespace(char *line, size_t len);
+void	trim_whitespace(char *line, size_t len, t_parser *parser);
 int		check_parser(t_parser *parser);
 void	free_parser(t_parser *parser);
 

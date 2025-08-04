@@ -11,6 +11,7 @@
 #include "rules/rules.h"
 #include "nfa/nfa.h"
 #include "dfa/dfa.h"
+#include "error/error.h"
 
 // MACROS
 #undef CHECK_ALLOC
@@ -24,6 +25,7 @@
 typedef struct s_lex
 {
 	char			*declaration_code;
+	t_error			error;
 	t_macros_list	macros_list;
 	t_parser		parser;
 	t_rules_list	rules_list;

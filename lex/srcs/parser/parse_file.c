@@ -26,7 +26,8 @@ void	get_section_loop(t_parser *parser)
 	while (getline(&parser->line, &parser->len, parser->file) != -1)
 	{
 		size_t len = strlen(parser->line);
-		trim_whitespace(parser->line, len);
+		add_to_error(&parser->error, parser->line, len);
+		trim_whitespace(parser->line, len, parser);
 		len = strlen(parser->line);
 		if (len == 0)
 			continue;
@@ -34,6 +35,7 @@ void	get_section_loop(t_parser *parser)
 			get_section(parser);
 		else
 			append_to_buffer(parser, parser->line);
+		parser->error_line++;
 	}
 	if (parser->current_section == SEC_USER_CODE && parser->buffer[0] != '\0')
 		get_section(parser);

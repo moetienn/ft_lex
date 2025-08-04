@@ -1,9 +1,14 @@
 #include "../../includes/parser.h"
 
-void	trim_whitespace(char *line, size_t len)
+void	trim_whitespace(char *line, size_t len, t_parser *parser)
 {
 	while (len > 0 && (line[len - 1] == ' ' || line[len - 1] == '\t' || line[len - 1] == '\n' || line[len - 1] == '\r'))
 		line[--len] = '\0';
+	if (len == 0)
+	{
+		parser->error_line++;
+		return;
+	}
 	while (line[0] == ' ' || line[0] == '\t')
 		memmove(line, line + 1, len--);
 }

@@ -6,6 +6,7 @@
         "lex.h": "c",
         "nfa.h": "c",
         "dfa.h": "c",
-        "stdint.h": "c"
+        "stdint.h": "c",
+        "stdlib.h": "c"
     }
 }
