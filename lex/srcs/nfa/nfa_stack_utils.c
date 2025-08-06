@@ -2,7 +2,10 @@
 
 bool	is_empty_stack_frag(t_frag_stack *stack)
 {
-	return (stack->top == 0);
+	if (stack->top == 0)
+		return (true);
+	else
+		return (false);
 }
 
 void free_frag_stack(t_frag_stack *stack)

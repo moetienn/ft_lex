@@ -240,4 +240,5 @@ void	char_token(t_token *current, t_lex *lex, size_t i, size_t *j)
 	}
 	current->value[0] = lex->rules_list.list[i].pattern[*j];
 	current->value[1] = '\0';
+	// printf("Char token: %s\n", current->value);
 }

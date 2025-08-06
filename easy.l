@@ -2,12 +2,16 @@
 #include <stdio.h>
 %}
 
-DIGIT   [0-9
+DIGITS	[0-9][a-z]
+DIGIT   [0-9]
+TEST	abc
+
 
 %%
 
-{DIGIT}+				{ printf("NUMBER: %s\n", yytext); }
-"+"|"-"|"*"				{ printf("OPERATOR: %s\n", yytext); }
+{DIGITS}+					{ printf("NUMBERS AND LETTERS: %s\n", yytext); }
+{DIGIT}+					{ printf("NUMBER: %s\n", yytext); }
+{TEST}+						{ printf("TESTS: %s\n", yytext); }
 
 
 %%

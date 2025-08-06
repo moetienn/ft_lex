@@ -36,5 +36,4 @@ void	add_to_error(t_error *error, char *line, size_t len)
 	error->file_lines = realloc(error->file_lines, sizeof(char *) * (count + 2));
 	error->file_lines[count] = strndup(line, len);
 	error->file_lines[count + 1] = NULL;
-	// printf("error.file_lines[%zu]: %s\n", count + 1, error->file_lines[count]);
 }

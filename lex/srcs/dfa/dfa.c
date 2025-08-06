@@ -20,20 +20,20 @@ static void	handle_old_transitions(t_dfa_transition **old_transitions, t_memory_
     }
 }
 
-static void add_dfa_transition(t_dfa_state *current_state, char symbol, t_dfa_state *next_state, t_memory_stack *mem_stack)
+static void	add_dfa_transition(t_dfa_state *current_state, char symbol, t_dfa_state *next_state, t_memory_stack *mem_stack)
 {
     t_dfa_transition **old_transitions = current_state->transitions;
     handle_old_transitions(old_transitions, mem_stack);
     current_state->transitions = realloc(current_state->transitions, sizeof(t_dfa_transition*) * (current_state->transition_count + 1));
     CHECK_ALLOC(current_state->transitions, , "Error: Failed to reallocate memory for DFA transitions", );
-    if (old_transitions != NULL)
-        update_memory_stack(mem_stack, old_transitions, current_state->transitions);
+    update_memory_stack(mem_stack, old_transitions, current_state->transitions);
     current_state->transitions[current_state->transition_count] = malloc(sizeof(t_dfa_transition));
     CHECK_ALLOC(current_state->transitions[current_state->transition_count], , "Error: Failed to allocate memory for DFA transition", );
     push_memory_stack(mem_stack, current_state->transitions[current_state->transition_count]);
     current_state->transitions[current_state->transition_count]->symbol = symbol;
     current_state->transitions[current_state->transition_count]->next_state = next_state;
     current_state->transition_count++;
+    // printf("Adding transition: Current state ID: %d, Symbol: %c, Next state ID: %d\n", current_state->id, symbol, next_state->id);
 }
 
 void	process_symbol(t_dfa_state *current_state, char symbol, t_dfa_state ***dfa_states, int *dfa_state_count, t_worklist *worklist, t_dfa *dfa, t_memory_stack *mem_stack)
@@ -58,7 +58,7 @@ void	from_nfa_to_dfa(t_lex *lex)
 		fprintf(stderr, "Error: lex or super_start is NULL\n");
 		return;
 	}
-	t_memory_stack *mem_stack = init_memory_stack(400);
+	t_memory_stack *mem_stack = init_memory_stack(1);
 	char alphabet[256];
 	int alphabet_size = 0;
 	collect_alphabet_from_nfa(lex->super_start, alphabet, &alphabet_size, 256);
@@ -81,9 +81,12 @@ void	from_nfa_to_dfa(t_lex *lex)
 		t_dfa_state *current_state = worklist_pop(&worklist);
 		if (!current_state)
 			continue;
+		// printf("Processing state: %p\n", current_state);
+		// printf("Alphabet size: %d\n", alphabet_size);
 		for (int a = 0; a < alphabet_size; ++a)
 		{
 			char symbol = alphabet[a];
+			// printf("Processing symbol: %c for current state ID: %d\n", symbol, current_state->id);
 			process_symbol(current_state, symbol, &dfa_states, &dfa_state_count, &worklist, lex->dfa, mem_stack);
 		}
 	}
@@ -105,6 +108,7 @@ void	from_nfa_to_dfa(t_lex *lex)
 				break;
 			}
 		}
+		// printf("Creating DFA state: ID: %d, Accept: %d, Action ID: %d\n", state->id, state->is_accept, state->action_id);
 	}
 	generate_lexyyc(lex, alphabet, alphabet_size);
 	free_memory_stack(mem_stack);

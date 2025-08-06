@@ -53,6 +53,8 @@ t_dfa_state *find_or_create_next_state(t_nfa_state **closure, int closure_size, 
 	next_state = malloc(sizeof(t_dfa_state));
 	CHECK_ALLOC(next_state, free(closure), "Error: Failed to allocate memory for next DFA state", NULL);
 	next_state->id = g_dfa_state_id++;
+	next_state->is_accept = 0;
+	next_state->action_id = 0;
 	next_state->nfa_states = closure;
 	next_state->nfa_state_count = closure_size;
 	next_state->transitions = NULL;

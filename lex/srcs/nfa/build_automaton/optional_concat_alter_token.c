@@ -56,3 +56,4 @@ void	process_token_concat(t_frag_stack *frag_stack)
 	free(left);
 	free(right);
 }
+
