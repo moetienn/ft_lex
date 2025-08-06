@@ -5,7 +5,7 @@ char	*extract_macro_name(const char *section, size_t *i)
 	size_t	start = *i;
 	char	*name = NULL;
 
-	while (section[*i] && section[*i] != ' ' && section[*i] != '[')
+	while (section[*i] && section[*i] != ' ' && section[*i] != '[' && section[*i] != '\t' && section[*i] != '\n' && section[*i] != ']' && section[*i] != '\r')
 	{
 		(*i)++;
 	}
@@ -51,9 +51,9 @@ void	collect_macros(t_lex *lex, size_t *i)
 		*i = 0;
 	while (lex->parser.first_section[*i])
 	{
-		if (lex->parser.first_section[*i] != ' ' && lex->parser.first_section[*i] != '\t' && lex->parser.first_section[*i] != '\n' && lex->parser.first_section[*i] != '[')
+		if (name == NULL && lex->parser.first_section[*i] != ' ' && lex->parser.first_section[*i] != '\t' && lex->parser.first_section[*i] != '\n' && lex->parser.first_section[*i] != '[')
 			name = extract_macro_name(lex->parser.first_section, i);
-		if (lex->parser.first_section[*i] == '[')
+		if (lex->parser.first_section[*i] != ' ' && lex->parser.first_section[*i] != '\t' && lex->parser.first_section[*i] != '\n')
 			value = extract_macro_value(lex->parser.first_section, i);
 		if (name != NULL && value != NULL)
 		{

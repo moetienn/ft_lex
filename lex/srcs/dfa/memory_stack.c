@@ -10,6 +10,11 @@ void	update_memory_stack(t_memory_stack *stack, void *old_ptr, void *new_ptr)
 			return;
 		}
 	}
+    if (old_ptr == NULL)
+	{
+		stack->pointers[stack->top + 1] = new_ptr;
+		stack->top++;
+	}
 }
 
 t_memory_stack *init_memory_stack(int capacity)
@@ -36,8 +41,15 @@ void	push_memory_stack(t_memory_stack *stack, void *ptr)
 {
     if (stack->top == stack->capacity - 1)
     {
-		fprintf(stderr, "Error: Memory stack overflow\n");
-		return;
+        // realloc memory stack if full
+        void **new_pointers = realloc(stack->pointers, sizeof(void *) * (stack->capacity * 2));
+        if (!new_pointers)
+        {
+            fprintf(stderr, "Error: Failed to reallocate memory for memory stack pointers\n");
+            return;
+        }
+        stack->pointers = new_pointers;
+        stack->capacity *= 2;
     }
     for (int i = 0; i <= stack->top; ++i)
     {

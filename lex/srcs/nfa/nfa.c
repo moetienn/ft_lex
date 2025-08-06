@@ -32,6 +32,7 @@ static t_nfa_fragment	*process_rule(t_token *current_token, int rule_index)
 	{
 		t_nfa_fragment *fragment = NULL;
 
+		// printf("Processing token: %s\n", current_token->value);
 		if (current_token->type == TOKEN_ESCAPE)
 			fragment = process_token_escape(current_token, rule_index);
 		else if (current_token->type == TOKEN_CHAR)
@@ -53,10 +54,15 @@ static t_nfa_fragment	*process_rule(t_token *current_token, int rule_index)
 		else if (current_token->type == TOKEN_QUOTE)
 			fragment = process_token_quote(current_token, rule_index);
 		if (fragment)
+		{
 			push_stack_frag(frag_stack, fragment);
+			// printf("Pushed fragment to stack, current stack size: %zu\n", frag_stack->top);
+		}
 		current_token = current_token->next;
 	}
+	// printf("Popping final fragment from stack\n");
 	t_nfa_fragment	*final_fragment = pop_stack_frag(frag_stack);
+	// printf("Final fragment start state ID: %d\n", final_fragment->start->id);
 	final_fragment->accept->is_accept = true;
 	free_frag_stack(frag_stack);
 	return (final_fragment);
@@ -84,8 +90,10 @@ void	build_nfa_from_rpn(t_lex *lex)
 	size_t rule_count = lex->rules_list.count;
 	t_nfa_fragment **rule_frags = initialize_rule_fragments(rule_count);
 	t_nfa_state *super_start = create_new_state();
+	// printf("rule_count: %zu\n", rule_count);
 	for (size_t i = 0; i < rule_count; i++)
 	{
+		// printf("Processing rule %zu\n", i);
 		t_token *current_token = lex->rpn_list[i];
 		rule_frags[i] = process_rule(current_token, i);
 		rule_frags[i]->accept->rule_index = i;
@@ -107,4 +115,5 @@ void	build_nfa(t_lex *lex)
     add_concat_tokens(lex);
     rpn(lex);
     build_nfa_from_rpn(lex);
+	// run_test_suites(lex);
 }

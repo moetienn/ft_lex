@@ -105,4 +105,12 @@ void    build_nfa(t_lex *lex);
 
 void	ft_lex(const char *filename);
 
+
+
+
+
+
+void	run_test_suites(t_lex *lex);
+
+
 #endif

@@ -4,8 +4,13 @@ char    *replace_tmp_with_macro(const char *tmp, t_macros_list *macros_list)
 {
 	for (size_t i = 0; i < macros_list->count; i++)
 	{
+		// printf("tmp macro: %s\n", tmp);
+		// printf("macros_list->list[i].name: %s\n", macros_list->list[i].name);
 		if (strcmp(macros_list->list[i].name, tmp) == 0)
+		{
+			// printf("Replacing macro: %s with value: %s\n", macros_list->list[i].name, macros_list->list[i].value);
 			return (strdup(macros_list->list[i].value));
+		}
 	}
 	return (strdup(tmp));
 }
@@ -42,6 +47,12 @@ char	*pattern_to_macro(const char *str, size_t *i, t_macros_list *macros_list)
 	}
 	strncpy(tmp, &str[start], len);
 	tmp[len] = '\0';
+	// // print macro list for debugging
+	// printf("Macro list:\n");
+	// for (size_t j = 0; j < macros_list->count; j++)
+	// {
+	// 	printf("Macro %zu: %s -> %s\n", j, macros_list->list[j].name, macros_list->list[j].value);
+	// }
 	macro = replace_tmp_with_macro(tmp, macros_list);
 	if (str[*i] == '}' && !is_whitespace(str[*i + 1]) && str[*i + 1] != '\0')
 	{

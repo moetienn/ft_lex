@@ -42,7 +42,8 @@ NFA = srcs/nfa/nfa.c \
 		srcs/nfa/build_automaton/class_token.c \
 		srcs/nfa/build_automaton/quantifier_token.c \
 		srcs/nfa/build_automaton/quote_token.c \
-		srcs/nfa/build_automaton/transition_helpers.c
+		srcs/nfa/build_automaton/transition_helpers.c \
+		srcs/nfa/test_nfa.c
 
 DFA = srcs/dfa/dfa.c \
 		srcs/dfa/alphabet.c \
