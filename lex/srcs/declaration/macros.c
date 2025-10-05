@@ -53,10 +53,13 @@ void	collect_macros(t_lex *lex, size_t *i)
 	{
 		if (name == NULL && lex->parser.first_section[*i] != ' ' && lex->parser.first_section[*i] != '\t' && lex->parser.first_section[*i] != '\n' && lex->parser.first_section[*i] != '[')
 			name = extract_macro_name(lex->parser.first_section, i);
-		if (lex->parser.first_section[*i] != ' ' && lex->parser.first_section[*i] != '\t' && lex->parser.first_section[*i] != '\n')
+		if (lex->parser.first_section[*i] != ' ' && lex->parser.first_section[*i] != '\t')
 			value = extract_macro_value(lex->parser.first_section, i);
-		if (name != NULL && value != NULL)
+		if (name != NULL && lex->parser.first_section[*i] == '\n')
 		{
+			if (value == NULL)
+			value = strdup("");
+			printf("Macro found: %s = %s\n", name, value);
 			add_macro(&lex->macros_list, name, value);
 			free(name);
 			free(value);

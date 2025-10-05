@@ -8,8 +8,13 @@ char    *replace_tmp_with_macro(const char *tmp, t_macros_list *macros_list)
 		// printf("macros_list->list[i].name: %s\n", macros_list->list[i].name);
 		if (strcmp(macros_list->list[i].name, tmp) == 0)
 		{
-			// printf("Replacing macro: %s with value: %s\n", macros_list->list[i].name, macros_list->list[i].value);
-			return (strdup(macros_list->list[i].value));
+			char *macro_value = strdup(macros_list->list[i].value);
+			if (!macro_value)
+			{
+				perror("Memory allocation failed");
+				return NULL;
+			}
+			return (macro_value);
 		}
 	}
 	return (strdup(tmp));
@@ -30,7 +35,41 @@ char	*append_macro(const char *str, size_t *i, char *macro, size_t start)
 	return macro;
 }
 
-char	*pattern_to_macro(const char *str, size_t *i, t_macros_list *macros_list)
+int	get_macro_line(t_lex *lex, const char *macro_name)
+{
+	bool found = true;
+
+	for (size_t i = 0; lex->parser.error.file_lines[i] != NULL; i++)
+	{
+		if (strstr(lex->parser.error.file_lines[i], macro_name) != NULL)
+		{
+			size_t j = 0;
+			while (lex->parser.error.file_lines[i][j])
+			{
+				// printf("Checking character: %c\n", lex->parser.error.file_lines[i][j]);
+				if (lex->parser.error.file_lines[i][j] != macro_name[j])
+				{
+					if (is_whitespace(lex->parser.error.file_lines[i][j]) && macro_name[j] == '\0')
+					{
+						// printf("Whitespace found at index %zu, macro name: %s\n", j, macro_name);
+						return i + 1; // Return line number (1-based index)
+					}
+					// printf("char difference at index %zu: '%d' vs '%d'\n", j, lex->parser.error.file_lines[i][j], macro_name[j]);
+					// printf("Macro %s not found in line %zu\n", macro_name, i + 1);
+					found = false;
+					break;
+				}
+				j++;
+			}
+			if (found == false)
+				continue;
+			return i + 1; // Return line number (1-based index)
+		}
+	}
+	return 0; // Return 0 if not found
+}
+
+char	*pattern_to_macro(const char *str, size_t *i, t_macros_list *macros_list, t_lex *lex)
 {
 	char    *tmp = NULL;
 	char    *macro = NULL;
@@ -47,14 +86,14 @@ char	*pattern_to_macro(const char *str, size_t *i, t_macros_list *macros_list)
 	}
 	strncpy(tmp, &str[start], len);
 	tmp[len] = '\0';
-	// // print macro list for debugging
-	// printf("Macro list:\n");
-	// for (size_t j = 0; j < macros_list->count; j++)
-	// {
-	// 	printf("Macro %zu: %s -> %s\n", j, macros_list->list[j].name, macros_list->list[j].value);
-	// }
 	macro = replace_tmp_with_macro(tmp, macros_list);
-	if (str[*i] == '}' && !is_whitespace(str[*i + 1]) && str[*i + 1] != '\0')
+	if (strlen(macro) == 0)
+	{
+		printf("Error: Empty macro definition for '%s'\n", tmp);
+		lex->parser.error_line = get_macro_line(lex, tmp);
+		fprintf(stderr, "%s:%d: incomplete name definition\n", lex->parser.filename, lex->parser.error_line);
+	}
+	if (str[*i] == '}' && !is_whitespace(str[*i + 1]) && str[*i + 1] != '\0' && strlen(macro) > 0)
 	{
 		start = *i + 1;
 		macro = append_macro(str, i, macro, start);

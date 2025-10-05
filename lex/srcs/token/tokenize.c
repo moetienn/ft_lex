@@ -22,8 +22,14 @@ void	handle_token_type(t_token *current, t_lex *lex, size_t i, size_t *j, t_toke
 		right_paren_token(current, lex, i, j);
 	else if (type == TOKEN_QUANTIFIER)
 		quantifier_token(current, lex, i, j);
-	else if (type == TOKEN_CHAR)
+	else if (type == TOKEN_ANCHOR_START && *j == 0)
+		anchor_start_token(current, lex, i, j);
+	else 
 		char_token(current, lex, i, j);
+	// else if (type == TOKEN_CHAR)
+	// 	char_token(current, lex, i, j);
+	// else if (type == TOKEN_ANCHOR_END)
+	// 	anchor_end_token(current, lex, i, j);
 }
 
 void	process_pattern_tokens(t_lex *lex, size_t i, size_t pattern_length, t_token **current)
@@ -38,6 +44,7 @@ void	process_pattern_tokens(t_lex *lex, size_t i, size_t pattern_length, t_token
         else
             add_next_token(current, type, NULL);
         handle_token_type(*current, lex, i, &j, type);
+		printf("Token: %s\n", (*current)->value);
     }
 }
 

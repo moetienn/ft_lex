@@ -11,8 +11,8 @@ int	check_valid_macro(const char *macro)
 {
 	if (macro == NULL || strlen(macro) == 0)
 	{
-		fprintf(stderr, "Error: Invalid macro pattern\n");
-		return (-1);
+		// fprintf(stderr, "Error: Invalid macro pattern\n");
+		return (2);
 	}
 	for (size_t i = 0; i < strlen(macro); i++)
 	{
@@ -40,19 +40,17 @@ int	check_if_correct_line(t_lex *lex, size_t i)
 	return (1);
 }
 
-int	search_correct_line(t_lex *lex)
+int	search_correct_line(t_lex *lex, const char *error_name)
 {
 	for (size_t i = 0; lex->parser.error.file_lines[i] != NULL; i++)
 	{
-		for (size_t j = 0; j < lex->macros_list.count; j++)
+		if (strstr(lex->parser.error.file_lines[i], error_name) != NULL)
 		{
-			if (strstr(lex->parser.error.file_lines[i], lex->macros_list.list[j].name) != NULL)
-			{
-				if (check_if_correct_line(lex, i) == 0)
-					return (i + 1);
-				else
-					continue;
-			}
+			printf("line to check : %s for macro name %s\n", lex->parser.error.file_lines[i], error_name);
+			if (check_if_correct_line(lex, i) == 0)
+				return (i + 1);
+			else
+				continue;
 		}
 	}
 	return (lex->parser.error_line);
@@ -60,9 +58,6 @@ int	search_correct_line(t_lex *lex)
 
 void	free_error_class(t_lex *lex)
 {
-	lex->parser.error_line = search_correct_line(lex);
-	fprintf(stderr, "%s:%d: bad character class\n", lex->parser.filename, lex->parser.error_line);
-	fprintf(stderr, "%s:%d: unrecognized rule\n", lex->parser.filename, lex->parser.error_line);
 	free(lex->parser.second_section);
 	free_macros_list(&lex->macros_list);
 	free_rules_list(&lex->rules_list);
@@ -89,10 +84,20 @@ void	collect_rules(t_lex *lex)
 			pattern = extract_pattern(lex->parser.second_section, &i);
 		else if (pattern == NULL && lex->parser.second_section[i] == '{')
 		{
-			pattern = pattern_to_macro(lex->parser.second_section, &i, &lex->macros_list);
+			pattern = pattern_to_macro(lex->parser.second_section, &i, &lex->macros_list, lex);
 			printf("Pattern after macro: %s\n", pattern);
-			if (check_valid_macro(pattern) == -1)
+			if (check_valid_macro(pattern) != 0)
 			{
+				if(check_valid_macro(pattern) == -1)
+				{
+					fprintf(stderr, "%s:%d: bad character class\n", lex->parser.filename, search_correct_line(lex, pattern));
+					fprintf(stderr, "%s:%d: unrecognized rule\n", lex->parser.filename, search_correct_line(lex, pattern));
+				}
+				else if (check_valid_macro(pattern) == 2)
+				{
+					fprintf(stderr, "%s:%d: undefined definition\n", lex->parser.filename, search_correct_line(lex, pattern));
+					fprintf(stderr, "%s:%d: unrecognized rule\n", lex->parser.filename, search_correct_line(lex, pattern));
+				}
 				free(pattern);
 				pattern = NULL;
 				free_error_class(lex);

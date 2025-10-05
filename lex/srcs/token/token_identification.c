@@ -1,5 +1,23 @@
 #include "../../includes/lex.h"
 
+void	anchor_start_token(t_token *current, t_lex *lex, size_t i, size_t *j)
+{
+	size_t start = *j;
+	while (lex->rules_list.list[i].pattern[*j] != '\0' || is_whitespace(lex->rules_list.list[i].pattern[*j]) == true)
+		(*j)++;
+	if (*j > start)
+	{
+		current->value = realloc(current->value, *j - start + 1);
+		if (!current->value)
+		{
+			perror("Memory allocation failed for anchor start token value");
+			exit(EXIT_FAILURE);
+		}
+		strncpy(current->value, &lex->rules_list.list[i].pattern[start], *j - start);
+		current->value[*j - start] = '\0';
+	}
+}
+
 void	class_token(t_token *current, t_lex *lex, size_t i, size_t *j)
 {
 	size_t start = *j;
