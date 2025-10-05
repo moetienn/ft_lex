@@ -65,6 +65,7 @@ void	shunting_yard(t_lex *lex)
 	for (size_t i = 0; i < lex->rules_list.count; i++)
 	{
 		t_token *current_token = lex->token_list[i];
+		printf("current_token : %s\n", current_token->value);
 		while (current_token)
 		{
 			// printf("Processing token: %s\n", current_token->value);

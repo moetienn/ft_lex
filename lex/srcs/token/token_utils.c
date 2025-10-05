@@ -23,6 +23,10 @@ t_token_type get_token_type(char c)
 		return TOKEN_RPAREN;
 	else if (c == '{')
 		return TOKEN_QUANTIFIER;
+	else if (c == '^')
+		return TOKEN_ANCHOR_START;
+	else if (c == '$')
+		return TOKEN_ANCHOR_END;
 	else
 		return TOKEN_CHAR;
 }

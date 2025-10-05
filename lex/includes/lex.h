@@ -50,11 +50,12 @@ char    *extract_action(const char *str, size_t *i);
 char	*extract_pattern(const char *str, size_t *i);
 char    *replace_tmp_with_macro(const char *tmp, t_macros_list *macros_list);
 char	*append_macro(const char *str, size_t *i, char *macro, size_t start);
-char	*pattern_to_macro(const char *str, size_t *i, t_macros_list *macros_list);
+char	*pattern_to_macro(const char *str, size_t *i, t_macros_list *macros_list, t_lex *lex);
 void    collect_rules(t_lex *lex);
 
 // TOKEN IDENTIFICATION
 
+void	anchor_start_token(t_token *current, t_lex *lex, size_t i, size_t *j);
 void	class_token(t_token *current, t_lex *lex, size_t i, size_t *j);
 void	plus_token(t_token *current, t_lex *lex, size_t i, size_t *j);
 void	quote_token(t_token *current, t_lex *lex, size_t i, size_t *j);

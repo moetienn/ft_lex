@@ -21,6 +21,8 @@ typedef enum e_token_type
 	TOKEN_LPAREN,          // (
 	TOKEN_RPAREN,          // )
 	TOKEN_QUANTIFIER,      // {m} or {m,n}
+	TOKEN_ANCHOR_START,    // ^
+	TOKEN_ANCHOR_END       // $
 }   t_token_type;
 	
 typedef struct s_token
